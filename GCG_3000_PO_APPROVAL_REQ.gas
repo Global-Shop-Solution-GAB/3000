@@ -1,0 +1,797 @@
+Program.Sub.ScreenSU.Start
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+
+Variable.Global.sPO.Declare(String)
+Variable.Global.fAmount.Declare(Float,0)
+Variable.Global.sApprover.Declare(String)
+Variable.Global.fLimit.Declare(Float,-1)
+Variable.Global.sApproveDate.Declare(String)
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+F.Intrinsic.Control.SetErrorHandler("Main_Err")
+F.Intrinsic.Control.ClearErrors
+
+'See Project Details for more info
+
+V.Local.sError.Declare(String)
+F.Intrinsic.Control.If(V.Caller.Hook,=,16090)
+	F.Intrinsic.Control.If(V.Passed.009001,=,"002801")
+		'Print PO Report - Will sort through V_PRT_LASER_PO and delete unapproved PO records;   This will notify user of all unapproved POs after finished
+		F.ODBC.Connection!conx.OpenConnection(V.Ambient.PDSN,V.Ambient.PUser,V.Ambient.PPass)
+		F.Intrinsic.Control.CallSub(Print_pos)
+		F.Intrinsic.Control.CallSub(Unload)
+	F.Intrinsic.Control.Else
+		F.Intrinsic.Control.End
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.EndIf
+
+F.ODBC.Connection!conx.OpenConnection(V.Ambient.PDSN,V.Ambient.PUser,V.Ambient.PPass)
+F.Intrinsic.String.LPad(V.Passed.000008,"0",7,V.Global.sPO)
+F.Intrinsic.Control.If(V.Caller.Hook,=,16850)
+	'Lock email and print button initally
+	F.Intrinsic.Control.CallSub(Chk_approval_status)
+	'Populate - Position GAB Hidden fields
+	F.Intrinsic.Control.CallSub(Pop_po_maint_fields)
+F.Intrinsic.Control.ElseIf(V.Caller.Hook,=,16855)
+	'Block Email and Print if NOT approved by appropriate tier
+	F.Intrinsic.Control.CallSub(Chk_approval_status)
+	'PO Change - Populate GAB Hidden fields
+	F.Intrinsic.Control.CallSub(Get_approval_info)
+	F.Intrinsic.Control.CallSub(Set_po_maint_fields)
+F.Intrinsic.Control.ElseIf(V.Caller.Hook,=,16870)
+	'Pre Save - Update Approval/ Populate Fields
+	F.Intrinsic.Control.CallSub(Set_approval_info)
+	F.Intrinsic.Control.CallSub(Set_po_maint_fields)
+F.Intrinsic.Control.ElseIf(V.Caller.Hook,=,16880)
+	'Post Save -  Update Approval/ Populate Fields
+	F.Intrinsic.Control.CallSub(Set_approval_info)
+	F.Intrinsic.Control.CallSub(Set_po_maint_fields)
+F.Intrinsic.Control.ElseIf(V.Caller.Hook,=,16913)
+	'If Email
+	'Check Appproval Status and Override,lock if not approved by appropriate tier
+	F.Intrinsic.Control.CallSub(Chk_approval_status)
+F.Intrinsic.Control.ElseIf(V.Caller.Hook,=,16911)
+	'If Email
+	'Check Appproval Status and Override,lock if not approved by appropriate tier
+	F.Intrinsic.Control.CallSub(Chk_approval_status)
+	'Email -  Update Approval/ Populate Fields/Cancel out of process if not valid
+	F.Intrinsic.Control.CallSub(Set_approval_info)
+	F.Intrinsic.Control.CallSub(Set_po_maint_fields)
+	F.Intrinsic.Control.If(V.Global.sApprover,=,"")
+		V.Passed.777777.Set(1)
+		F.Intrinsic.UI.Msgbox("Unable to e-mail.  PO has not been approved.")
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.CallSub(Unload)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Main_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3000_PO_APPROVAL_REQ.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+Program.Sub.Main.End
+
+Program.Sub.Print_POs.Start
+F.Intrinsic.Control.SetErrorHandler("Print_POs_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.sQuery.Declare(String)
+V.Local.sMsg.Declare(String)
+V.Local.iC.Declare(Long)
+V.Local.iUB.Declare(Long,-1)
+V.Local.sPOs.Declare(String)
+V.Local.sPOs.Redim(-1,-1)
+
+'Loops through all POs to be printed
+F.Intrinsic.String.Build("SELECT DISTINCT RPTID, PO_NO, DATE_PROMISE,VENDOR FROM V_PRT_LASER_PO WHERE TERMINAL_NO='{0}' ",V.Caller.Terminal,V.Local.sQuery)
+'F.Intrinsic.String.Concat("SELECT DISTINCT RPTID, PO_NO, DATE_PROMISE,VENDOR FROM V_PRT_LASER_PO WHERE TERMINAL_NO='",V.Caller.Terminal,"'",V.Local.sQuery)
+F.ODBC.Connection!conx.OpenRecordsetRO("rstPrint",V.Local.sQuery)
+F.Intrinsic.Control.DoUntil(V.ODBC.conx!rstPrint.EOF,=,True)
+	V.Global.sPO.Set(V.ODBC.conx!rstPrint.FieldValTrim!PO_NO)
+	'Auto-approves records prior to printing if PO Amount <= User $ Limit
+	F.Intrinsic.Control.CallSub(Set_approval_info,"DueDate",V.ODBC.conx!rstPrint.FieldValTrim!DATE_PROMISE,"VendCust",V.ODBC.conx!rstPrint.FieldValTrim!VENDOR)
+	'Adds it to sPOs array if it is still unapproved
+	F.Intrinsic.Control.If(V.Global.sApprover,=,"")
+		F.Intrinsic.Math.Add(V.Local.iUB,1,V.Local.iUB)
+		F.Intrinsic.Control.If(V.Local.iUB,=,0)
+			V.Local.sPOs.Redim(0,0)
+		F.Intrinsic.Control.Else
+			V.Local.sPOs.RedimPreserve(0,V.Local.iUB)
+		F.Intrinsic.Control.EndIf
+		V.Local.sPOs(v.Local.iUB).Set(V.Global.sPO)
+	F.Intrinsic.Control.EndIf
+	F.ODBC.conx!rstPrint.MoveNext
+F.Intrinsic.Control.Loop
+F.ODBC.conx!rstPrint.Close
+
+'Loops through all unapproved POs, deletes them from BI PO table, and builds a list of these POs to display in a messagebox.
+F.Intrinsic.Control.For(V.Local.iC,0,V.Local.sPOs.UBound,1)
+	F.Intrinsic.String.Build("DELETE FROM PRT_LASER_PO WHERE PO_NO = '{0}' and TERMINAL_NO = '{1}'",V.Local.sPOs(v.Local.iC),V.Caller.Terminal,V.Local.sQuery)
+'	F.Intrinsic.String.Concat("DELETE FROM PRT_LASER_PO WHERE PO_NO='",V.Local.sPOs(v.Local.iC),"' AND TERMINAL_NO='",V.Caller.Terminal,"'",V.Local.sQuery)
+	F.ODBC.Connection!conx.Execute(V.Local.sQuery)
+	F.Intrinsic.Control.If(V.Local.sMsg,=,"")
+		F.Intrinsic.String.Build("The following POs were not approved and therefore were not printed:{0}{0}{1}",V.Ambient.NewLine,V.Local.sPOs(v.Local.iC),V.Local.sMsg)
+'		F.Intrinsic.String.Concat("The following POs were not approved and therefore were not printed:",V.Ambient.NewLine,V.Ambient.NewLine,V.Local.sPOs(v.Local.iC),V.Local.sMsg)
+	F.Intrinsic.Control.Else
+		F.Intrinsic.String.Build("{0}{1}{2}",V.Local.sMsg,V.Ambient.NewLine,V.Local.sPOs(v.Local.iC),V.Local.sMsg)
+'		F.Intrinsic.String.Concat(V.Local.sMsg,V.Ambient.NewLine,V.Local.sPOs(v.Local.iC),V.Local.sMsg)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Next(V.Local.iC)
+
+F.Intrinsic.Control.If(V.Local.sMsg,<>,"")
+	'Displays all unapproved POs in a messagebox after process is completed.
+	F.Intrinsic.UI.Msgbox(V.Local.sMsg)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.String.Build("Select * From PRT_LASER_PO WHERE  TERMINAL_NO = '{0}' ",V.Caller.Terminal,V.Local.sQuery)
+'F.Intrinsic.String.Concat("Select * From PRT_LASER_PO WHERE  TERMINAL_NO='",V.Caller.Terminal,"'",V.Local.sQuery)
+F.ODBC.Connection!conx.OpenRecordsetRO("rstPrint",V.Local.sQuery)
+F.Intrinsic.Control.If(V.ODBC.conx!rstPrint.EOF,=,True)
+	V.Passed.CANCEL.Set(1)
+F.Intrinsic.Control.EndIf
+F.ODBC.conx!rstPrint.Close
+
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Print_POs_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3000_PO_APPROVAL_REQ.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+Program.Sub.Print_POs.End
+
+Program.Sub.Unload.Start
+F.ODBC.Connection!conx.Close
+F.Intrinsic.Control.End
+
+Program.Sub.Unload.End
+
+Program.Sub.Sum_PO_Amount.Start
+'Sums all the extensions (Line Qty * Line Cost) of the PO lines to calculate current PO Amount
+F.Intrinsic.Control.SetErrorHandler("Sum_PO_Amount_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.sQuery.Declare(String)
+V.Local.fSum.Declare(Float,0)
+
+F.Intrinsic.String.Build("SELECT EXTENSION FROM V_PO_LINES WHERE PURCHASE_ORDER = '{0}' ",V.Global.sPO,V.Local.sQuery)
+'F.Intrinsic.String.Concat("SELECT EXTENSION FROM V_PO_LINES WHERE PURCHASE_ORDER='",V.Global.sPO,"'",V.Local.sQuery)
+F.ODBC.Connection!conx.OpenRecordsetRO("rstSum",V.Local.sQuery)
+F.Intrinsic.Control.DoUntil(V.ODBC.conx!rstSum.EOF,=,True)
+	F.Intrinsic.Math.Add(V.Local.fSum,V.ODBC.conx!rstSum.FieldValFloat!EXTENSION,V.Local.fSum)
+	F.ODBC.conx!rstSum.MoveNext
+F.Intrinsic.Control.Loop
+F.ODBC.conx!rstSum.Close
+
+F.Intrinsic.Variable.AddRV("Amount",V.Local.fSum)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Sum_PO_Amount_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3000_PO_APPROVAL_REQ.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+Program.Sub.Sum_PO_Amount.End
+
+Program.Sub.Get_$_Limit.Start
+'Gets current $ limit for user
+F.Intrinsic.Control.SetErrorHandler("Get_$_Limit_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.sQuery.Declare(String)
+V.Local.sUser.Declare(String)
+V.Local.bExists.Declare(Boolean)
+V.Local.fLimit.Declare(Float)
+
+F.Intrinsic.Variable.ArgExists("sUser",V.Local.bExists)
+F.Intrinsic.Control.If(V.Local.bExists,=,True)
+	V.Local.sUser.Set(V.Args.sUser)
+F.Intrinsic.Control.Else
+	V.Local.sUser.Set(V.Caller.User)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.String.Build("Select LIMIT FROM GCG_3000_LIMIT WHERE {1}USER{1} = '{0}'",V.Local.sUser,V.Ambient.DblQuote,V.Local.sQuery)
+'F.Intrinsic.String.Concat("SELECT LIMIT FROM GCG_3000_LIMIT WHERE GS_USER = '",V.Local.sUser,"'",V.Local.sQuery)
+F.ODBC.Connection!conx.OpenRecordsetRO("rstLimit",V.Local.sQuery)
+F.Intrinsic.Control.If(V.ODBC.conx!rstLimit.EOF,<>,True)
+	V.Local.fLimit.Set(V.ODBC.conx!rstLimit.FieldValFloat!LIMIT)
+F.Intrinsic.Control.Else
+	V.Local.fLimit.Set(-1)
+F.Intrinsic.Control.EndIf
+F.ODBC.conx!rstLimit.Close
+
+F.Intrinsic.Control.If(V.Local.bExists,=,True)
+	F.Intrinsic.Variable.AddRV("Limit",V.Local.fLimit)
+F.Intrinsic.Control.Else
+	V.Global.fLimit.Set(V.Local.fLimit)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Get_$_Limit_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3000_PO_APPROVAL_REQ.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+Program.Sub.Get_$_Limit.End
+
+Program.Sub.Set_Approval_Info.Start
+'Reads/Sets ATG_Approval info for selected PO; Updates PO amount if new or amount has changed; Auto-approves if user meets PO limit; If v.global.sApprover ="" after sub, PO not approved
+F.Intrinsic.Control.SetErrorHandler("Set_Approval_Info_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.sQuery.Declare(String)
+V.Local.dDate.Declare(Date)
+V.Local.fCurrAmount.Declare(Float)
+V.Local.iTier.Declare(Long)
+
+'Set global fLimit
+F.Intrinsic.Control.CallSub(Get_approval_info)
+F.Intrinsic.Control.CallSub(Sum_po_amount)
+V.Local.fCurrAmount.Set(V.Args.Amount)
+
+F.Intrinsic.Control.If(V.Global.fAmount,=,V.Local.fCurrAmount)
+	'If current PO amount = amount on Approval record, no changes have been made, so exit sub.  Note:  If there is no record at all,  v.global.fAmount=-1, so it will not exit sub
+	F.Intrinsic.Control.If(V.Caller.Hook,=,16870)
+		'If Pre-Save, update Due Date prior to exiting
+		F.Intrinsic.String.Build("SELECT * FROM GCG_3000_PO_APRV WHERE PURCHASE_ORDER = '{0}' ",V.Global.sPO,V.Local.sQuery)
+'		F.Intrinsic.String.Concat("SELECT * FROM ATG_APPROVAL WHERE GS_NUMBER='",V.Global.sPO,"' AND M_TYPE=2",V.Local.sQuery)
+		F.ODBC.Connection!conx.OpenRecordsetRW("rstApproval",V.Local.sQuery)
+		F.Intrinsic.Control.If(V.ODBC.conx!rstApproval.EOF,<>,True)
+			F.Intrinsic.Control.CallSub(Format_date_vend)
+			F.ODBC.conx!rstApproval.Set!DATE_DUE(V.Args.DateDue)
+			F.ODBC.conx!rstApproval.Update
+		F.Intrinsic.Control.EndIf
+		F.ODBC.conx!rstApproval.Close
+	F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.ExitSub
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.String.Build("SELECT * FROM GCG_3000_PO_APRV WHERE PURCHASE_ORDER = '{0}' ",V.Global.sPO,V.Local.sQuery)
+'F.Intrinsic.String.Concat("SELECT * FROM ATG_APPROVAL WHERE GS_NUMBER='",V.Global.sPO,"' AND M_TYPE=2",V.Local.sQuery)
+F.ODBC.Connection!conx.OpenRecordsetRW("rstApproval",V.Local.sQuery)
+F.Intrinsic.Control.If(V.ODBC.conx!rstApproval.EOF,=,True)
+	'If no Approval record exists, add record
+	F.ODBC.conx!rstApproval.AddNew
+	F.ODBC.conx!rstApproval.Set!PURCHASE_ORDER(V.Global.sPO)
+'	F.ODBC.conx!rstApproval.Set!M_TYPE(2)
+F.Intrinsic.Control.EndIf
+
+'Updates Orginator & Amount if new approval record OR if PO amount changes
+V.Global.fAmount.Set(V.Local.fCurrAmount)
+F.ODBC.conx!rstApproval.Set!ORIGINATOR(V.Caller.User)
+F.ODBC.conx!rstApproval.Set!AMOUNT(V.Global.fAmount)
+
+'Get tier of order amount and set TIER_ORDER
+F.Intrinsic.String.Build("Select TIER from GCG_3000_TIERS where MIN_AMT <= {0} and MAX_AMT >= {0}",V.Global.fAmount,V.Local.sQuery)
+F.ODBC.Connection!conx.OpenRecordsetRO("rstTier",V.Local.sQuery)
+F.Intrinsic.Control.If(V.ODBC.conx!rstTier.EOF,<>,True)
+	F.ODBC.conx!rstApproval.Set!TIER_ORDER(V.ODBC.conx!rstTier.FieldValLong!TIER)
+F.Intrinsic.Control.Else
+	F.ODBC.conx!rstApproval.Set!TIER_ORDER(1)
+F.Intrinsic.Control.EndIf
+F.ODBC.conx!rstTier.Close
+
+F.Intrinsic.Control.If(V.Caller.Hook,=,16090)
+	F.Intrinsic.Date.ConvertDString(V.Args.DateDue,"YYYYMMDD",V.Local.dDate)
+	F.ODBC.conx!rstApproval.Set!DATE_DUE(V.Local.dDate.PervasiveDate)
+	F.ODBC.conx!rstApproval.Set!VENDOR(V.Args.VendCust)
+F.Intrinsic.Control.Else
+	F.Intrinsic.Control.CallSub(Format_date_vend)
+	F.ODBC.conx!rstApproval.Set!DATE_DUE(V.Args.DateDue)
+	F.ODBC.conx!rstApproval.Set!VENDOR(V.Args.VendCust)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.If(V.Local.fCurrAmount,<=,V.Global.fLimit)
+	'If PO meets User $ Limit, update Approver & Approved date field
+	V.Global.sApprover.Set(V.Caller.User)
+	v.Global.sApproveDate.Set(V.Ambient.Now.PervasiveDate)
+	F.ODBC.conx!rstApproval.Set!APPROVER(V.Caller.User)
+	F.ODBC.conx!rstApproval.Set!DATE_LAST_ACTION(V.Global.sApproveDate)
+F.Intrinsic.Control.Else
+	'If PO amount does not meet User $ Limit, clear Approver.  Ignoring Approver date at the moment, since it may become a useful flag later
+	F.ODBC.conx!rstApproval.Set!APPROVER("")
+	V.Global.sApprover.Set("")
+	V.Global.sApproveDate.Set("")
+	F.Intrinsic.Control.CallSub(Send_gssmsg)
+F.Intrinsic.Control.EndIf
+F.ODBC.conx!rstApproval.Update
+F.ODBC.conx!rstApproval.Close
+
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Set_Approval_Info_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3000_PO_APPROVAL_REQ.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+Program.Sub.Set_Approval_Info.End
+
+Program.Sub.Get_Approval_Info.Start
+'Sets fAmount=-1  and sApprover="" if no record;  sets sApprover="" if there is a record but not approved
+F.Intrinsic.Control.SetErrorHandler("Get_Approval_Info_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.sQuery.Declare(String)
+V.Static.bGotLimit.Declare(Boolean)
+
+'Set v.global.fLimit
+F.Intrinsic.Control.If(V.Static.bGotLimit,=,False)
+	F.Intrinsic.Control.CallSub(Get_$_limit)
+	V.Static.bGotLimit.Set(True)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.String.Build("SELECT * FROM GCG_3000_PO_APRV WHERE PURCHASE_ORDER ='{0}' ",V.Global.sPO,V.Local.sQuery)
+'F.Intrinsic.String.Concat("SELECT * FROM ATG_APPROVAL WHERE GS_NUMBER='",V.Global.sPO,"'",V.Local.sQuery)
+F.ODBC.Connection!conx.OpenRecordsetRW("rstApproval",V.Local.sQuery)
+F.Intrinsic.Control.If(V.ODBC.conx!rstApproval.EOF,<>,True)
+	V.Global.sApprover.Set(V.ODBC.conx!rstApproval.FieldValTrim!APPROVER)
+	V.Global.fAmount.Set(V.ODBC.conx!rstApproval.FieldValFloat!AMOUNT)
+	F.Intrinsic.Control.If(V.ODBC.conx!rstApproval.FieldValIsNull!DATE_LAST_ACTION,<>,True)
+		V.Global.sApproveDate.Set(V.ODBC.conx!rstApproval.FieldValTrim!DATE_LAST_ACTION)
+	F.Intrinsic.Control.Else
+		V.Global.sApproveDate.Set("")
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Else
+	V.Global.fAmount.Set(-1)
+F.Intrinsic.Control.EndIf
+F.ODBC.conx!rstApproval.Close
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Get_Approval_Info_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3000_PO_APPROVAL_REQ.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+Program.Sub.Get_Approval_Info.End
+
+Program.Sub.Set_PO_Maint_Fields.Start
+F.Intrinsic.Control.SetErrorHandler("Set_PO_Maint_Fields_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.sDate.Declare(String)
+
+'Set Checkfield
+F.Intrinsic.Control.If(V.Global.sApprover,=,"")
+	V.Passed.GAB-CHK-1.set("N")
+	'Set Approver field
+	V.Passed.GAB-TEXT-1.Set("")
+	'Set Date
+	V.Passed.GAB-TEXT-2.set("")
+F.Intrinsic.Control.Else
+	V.Passed.GAB-CHK-1.set("Y")
+	'Set Approver field
+	V.Passed.GAB-TEXT-1.Set(V.Global.sApprover)
+	'Set Date
+	F.Intrinsic.String.Format(V.Global.sApproveDate,"MM/DD/YY",V.Local.sDate)
+	V.Passed.GAB-TEXT-2.set(V.Local.sDate)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Set_PO_Maint_Fields_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3000_PO_APPROVAL_REQ.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+Program.Sub.Set_PO_Maint_Fields.End
+
+Program.Sub.Pop_PO_Maint_Fields.Start
+F.Intrinsic.Control.SetErrorHandler("Pop_PO_Maint_Fields_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+
+
+' Populate PO Header Maintenance (View)
+F.Intrinsic.Control.If(V.Caller.Switches,=,"V")
+	V.Passed.000065.Set("Approve")
+	F.Intrinsic.UI.ChangeCallerProperty(V.Passed.000065,"Lock",0)
+F.Intrinsic.Control.Else
+	V.Passed.000065.Set("Approve")
+	F.Intrinsic.UI.ChangeCallerProperty(V.Passed.000065,"Lock",1)
+F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.End
+
+
+'Shrink  Phys & Chem label
+F.Intrinsic.Variable.SetProperty("000137","PW",70)
+
+'Approver lbl
+F.Intrinsic.Variable.SetProperty("GAB-LBL-1","PL",548)
+F.Intrinsic.Variable.SetProperty("GAB-LBL-1","PT",431)
+F.Intrinsic.Variable.SetProperty("GAB-LBL-1","PW",50)
+F.Intrinsic.Variable.SetProperty("GAB-LBL-1","PH",12)
+V.Passed.GAB-LBL-1.Set("Approver")
+
+'Approver Field
+F.Intrinsic.Variable.SetProperty("GAB-TEXT-1","PL",550)
+F.Intrinsic.Variable.SetProperty("GAB-TEXT-1","PT",445)
+F.Intrinsic.Variable.SetProperty("GAB-TEXT-1","PW",100)
+
+'Approve Date Label
+F.Intrinsic.Variable.SetProperty("GAB-LBL-2","PL",663)
+F.Intrinsic.Variable.SetProperty("GAB-LBL-2","PT",431)
+F.Intrinsic.Variable.SetProperty("GAB-LBL-2","PW",70)
+F.Intrinsic.Variable.SetProperty("GAB-LBL-2","PH",12)
+V.Passed.GAB-LBL-2.Set("Approve Date")
+
+'Approve Date Label
+F.Intrinsic.Variable.SetProperty("GAB-TEXT-2","PL",665)
+F.Intrinsic.Variable.SetProperty("GAB-TEXT-2","PT",445)
+F.Intrinsic.Variable.SetProperty("GAB-TEXT-2","PW",70)
+
+'Approve Checkfield label
+F.Intrinsic.Variable.SetProperty("GAB-LBL-3","PL",573)
+F.Intrinsic.Variable.SetProperty("GAB-LBL-3","PT",417)
+F.Intrinsic.Variable.SetProperty("GAB-LBL-3","PW",50)
+V.Passed.GAB-LBL-3.Set("Approved")
+
+'Approve Checkfield
+F.Intrinsic.Variable.SetProperty("GAB-CHK-1","PL",550)
+F.Intrinsic.Variable.SetProperty("GAB-CHK-1","PT",416)
+F.Intrinsic.Variable.SetProperty("GAB-CHK-1","PW",20)
+F.Intrinsic.Variable.SetProperty("GAB-CHK-1","PH",18)
+
+'Unhides fields
+F.Intrinsic.UI.ChangeCallerProperty(V.Passed.GAB-LBL-3,"HIDE",0)
+F.Intrinsic.UI.ChangeCallerProperty(V.Passed.GAB-CHK-1,"HIDE",0)
+F.Intrinsic.UI.ChangeCallerProperty(V.Passed.GAB-LBL-1,"HIDE",0)
+F.Intrinsic.UI.ChangeCallerProperty(V.Passed.GAB-TEXT-1,"HIDE",0)
+F.Intrinsic.UI.ChangeCallerProperty(V.Passed.GAB-LBL-2,"HIDE",0)
+F.Intrinsic.UI.ChangeCallerProperty(V.Passed.GAB-TEXT-2,"HIDE",0)
+
+'Decided to keep fields as locked since the fields should not be edited
+'F.Intrinsic.UI.ChangeCallerProperty(V.Passed.GAB-LBL-1,"LOCK",0)
+'F.Intrinsic.UI.ChangeCallerProperty(V.Passed.GAB-TEXT-1,"LOCK",0)
+'F.Intrinsic.UI.ChangeCallerProperty(V.Passed.GAB-LBL-2,"LOCK",0)
+'F.Intrinsic.UI.ChangeCallerProperty(V.Passed.GAB-TEXT-2,"LOCK",0)
+'F.Intrinsic.UI.ChangeCallerProperty(V.Passed.GAB-LBL-3,"LOCK",0)
+'F.Intrinsic.UI.ChangeCallerProperty(V.Passed.GAB-CHK-1,"LOCK",0)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Pop_PO_Maint_Fields_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3000_PO_APPROVAL_REQ.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+Program.Sub.Pop_PO_Maint_Fields.End
+
+Program.Sub.Send_GSSMsg.Start
+'Sends an Innernet message to all of the Approvers for the current user.  This notifies the Approvers that a PO needs to be approved.  The Amount on the PO must also be within the Approver's $ limit in order for them to receive the message.
+F.Intrinsic.Control.SetErrorHandler("Send_GSSMsg_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.sMessage.Declare(String)
+V.Local.sData.Declare(String)
+V.Local.sName.Declare(String)
+V.Local.sQuery.Declare(String)
+V.Local.sVendor.Declare(String)
+V.Local.sEmail.Declare(String)
+V.Local.sUserEmail.Declare(String)
+V.Local.sApproverName.Declare(String)
+V.Local.sUserName.Declare(String)
+V.Local.iRet.Declare(Long)
+
+
+F.Global.Security.GetFullName(V.Caller.User,V.Local.sName)
+'F.Intrinsic.String.Concat("User ID: ",V.Caller.User,V.Ambient.NewLine,V.Local.sMessage)
+F.Intrinsic.String.Build("User ID:{4}{3} User Name:{0}{3} PO Number:{1}{3} PO Amount:{2}{3} Explanation: This GS User has edited or created a PO with the above amount, and is requesting PO approval.",V.Local.sName,V.Global.sPO,V.Global.fAmount,V.Ambient.NewLine,V.Caller.User,V.Local.sMessage)
+'.'Intrinsic.String.Concat(V.Local.sMessage,"User Name: ",V.Local.sName,V.Ambient.NewLine,V.Local.sMessage)
+'Intrinsic.String.Concat(V.Local.sMessage,"PO Number: ",V.Global.sPO,V.Ambient.NewLine,V.Local.sMessage)
+'Intrinsic.String.Concat(V.Local.sMessage,"PO Amount: ",V.Global.fAmount,V.Ambient.NewLine,V.Local.sMessage)
+'Intrinsic.String.Concat(V.Local.sMessage,"Explanation: This GS User has edited or created a PO with the above amount, and is requesting PO approval.",V.Local.sMessage)
+'
+F.Intrinsic.String.Build("SELECT APPROVER FROM GCG_3000_APPROVERS WHERE {1}USER{1} = '{0}' ",V.Caller.User,V.Ambient.DblQuote,V.Local.sQuery)
+'F.Intrinsic.String.Concat("SELECT APPROVER FROM GCG_3000_APPROVERS WHERE USER='",V.Caller.User,"' AND M_TYPE=2",V.Local.sQuery)
+F.ODBC.Connection!conx.OpenRecordsetRO("rstApprovers",V.Local.sQuery)
+F.Intrinsic.Control.DoUntil(V.ODBC.conx!rstApprovers.EOF,"=",True)
+	F.Intrinsic.Control.CallSub(Get_$_limit,"sUser",V.ODBC.conx!rstApprovers.FieldValTrim!APPROVER)
+	F.Intrinsic.Control.If(V.Global.fLimit,<=,V.Args.Limit)
+
+		F.Global.Messaging.CreateInternalMessage(V.ODBC.conx!rstApprovers.FieldValTrim!APPROVER,V.Local.sMessage)
+
+		F.Intrinsic.UI.Msgbox("Would you like to send an email to your approver?","Send Email",4,V.Local.iRet)
+		F.Intrinsic.Control.If(V.Local.iRet,=,6)
+			F.Global.Messaging.isCourierRunning(V.Local.iRet)
+			F.Intrinsic.Control.If(V.Local.iRet,<>,0)
+				F.Global.Security.GetUserEmail(V.ODBC.conx!rstApprovers.FieldValTrim!APPROVER,V.Caller.CompanyCode,V.Local.sEmail)
+				F.Global.Security.GetFullName(V.ODBC.conx!rstApprovers.FieldValTrim!APPROVER,V.Caller.CompanyCode,V.Local.sApproverName)
+				F.Global.Security.GetUserEmail(V.Caller.User,V.Caller.CompanyCode,V.Local.sUserEmail)
+				F.Global.Security.GetFullName(V.Caller.User,V.Caller.CompanyCode,V.Local.sUserName)
+				F.Global.Messaging.CreateEMMessage(V.Local.sEmail,V.Local.sApproverName,V.Local.sUserEmail,V.Local.sUserName,"PO Approval Requested",V.Local.sMessage)
+				F.Intrinsic.UI.Msgbox("Email Sent.")
+			F.Intrinsic.Control.Else
+				F.Intrinsic.UI.Msgbox("Courier is not running. Please ensure courier is running in order to send emails.")
+			F.Intrinsic.Control.EndIf
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.EndIf
+	F.ODBC.conx!rstApprovers.MoveNext
+F.Intrinsic.Control.Loop
+F.ODBC.conx!rstApprovers.Close
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Send_GSSMsg_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3000_PO_APPROVAL_REQ.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+Program.Sub.Send_GSSMsg.End
+
+Program.Sub.Format_Date_Vend.Start
+'Formats due date and vendor depending on which hook is being fired
+F.Intrinsic.Control.SetErrorHandler("Format_Date_Vend_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.dDate.Declare(Date)
+V.Local.sDate.Declare(String)
+V.Local.sVendor.Declare(String)
+V.Local.sQuery.Declare(String)
+V.Local.bDate.Declare(Boolean)
+V.Local.sMon.Declare(String)
+V.Local.sDay.Declare(String)
+V.Local.sYr.Declare(String)
+
+F.Intrinsic.Date.ConvertDString("01011901","MMDDYYYY",V.Local.dDate)
+F.Intrinsic.Control.If(V.Caller.Hook,=,16870)
+	F.Intrinsic.Control.If(V.Passed.000029.Trim,<>,"000000")
+		F.Intrinsic.Control.If(V.Passed.000029.Trim,<>,"")
+			F.Intrinsic.Date.IsDate(V.Passed.000029,V.Local.bDate)
+			F.Intrinsic.Control.If(V.Local.bDate,<>,False)
+				F.Intrinsic.Date.ConvertDString(V.Passed.000029,"MMDDYY",V.Local.dDate)
+			F.Intrinsic.Control.Else
+				'Rebuild string to date format if Not recognized.
+				F.Intrinsic.String.Mid(V.Passed.000029.Trim,3,2,V.Local.sYr)
+				F.Intrinsic.String.Mid(V.Passed.000029.Trim,5,2,V.Local.sMon)
+				F.Intrinsic.String.Right(V.Passed.000029.Trim,2,V.Local.sDay)
+				F.Intrinsic.String.Build("{0}{1}{2}",V.Local.sMon,V.Local.sDay,V.Local.sYr,V.Local.sDate)
+				F.Intrinsic.Date.ConvertDString(V.Local.sDate,"MMDDYY",V.Local.dDate)
+			F.Intrinsic.Control.EndIf
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.EndIf
+	V.Local.sDate.Set(V.Local.dDate.PervasiveDate)
+	V.Local.sVendor.Set(V.Passed.000011)
+F.Intrinsic.Control.Else
+	F.Intrinsic.String.Build("Select DATE_DUE, VENDOR FROM V_PO_HEADER WHERE PURCHASE_ORDER='{0}' ",V.Global.sPO,V.Local.sQuery)
+'	F.Intrinsic.String.Concat("SELECT DATE_DUE, VENDOR FROM V_PO_HEADER WHERE PURCHASE_ORDER='",V.Global.sPO,"'",V.Local.sQuery)
+	F.ODBC.Connection!conx.OpenRecordsetRO("rstPO",V.Local.sQuery)
+	F.Intrinsic.Control.If(V.ODBC.conx!rstPO.EOF,<>,True)
+		V.Local.sDate.Set(V.ODBC.conx!rstPO.FieldValTrim!DATE_DUE)
+		V.Local.sDate.Set(V.Local.dDate.PervasiveDate)
+		V.Local.sVendor.Set(V.ODBC.conx!rstPO.FieldValTrim!VENDOR)
+	F.Intrinsic.Control.Else
+		V.Local.sDate.Set(V.Local.dDate.PervasiveDate)
+	F.Intrinsic.Control.EndIf
+	F.ODBC.conx!rstPO.Close
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Variable.AddRV("DateDue",V.Local.sDate)
+F.Intrinsic.Variable.AddRV("VendCust",V.Local.sVendor)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Format_Date_Vend_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3000_PO_APPROVAL_REQ.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+Program.Sub.Format_Date_Vend.End
+
+Program.Sub.Chk_Approval_Status.Start
+F.Intrinsic.Control.SetErrorHandler("Chk_Approval_Status_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+
+'Check Approval Status of PO.
+V.Local.sQuery.Declare(String)
+V.Local.bStat.Declare(Boolean)
+
+'Just set local boolean variable to true or false and check at the end to lock/unlock fields.
+F.Intrinsic.String.Build("Select * from GCG_3000_PO_APRV where PURCHASE_ORDER = '{0}'",V.Global.sPO,V.Local.sQuery)
+F.ODBC.Connection!conx.OpenRecordsetRO("rstChkStat",V.Local.sQuery)
+F.Intrinsic.Control.If(V.ODBC.conx!rstChkStat.EOF,<>,True)
+	F.Intrinsic.Control.If(V.ODBC.conx!rstChkStat.FieldVal!APPROVED,=,True)
+		F.Intrinsic.Control.If(V.ODBC.conx!rstChkStat.FieldValLong!TIER_APPROVER,<,V.ODBC.conx!rstChkStat.FieldValLong!TIER_ORDER)
+			'Lock if not approved by appropriate tier, else unlock
+			V.Local.bStat.Set(False)
+		F.Intrinsic.Control.Else
+			V.Local.bStat.Set(True)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Else
+		'Lock if NOT approved.
+		V.Local.bStat.Set(False)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Else
+	'Lock if no record created for approval yet
+	V.Local.bStat.Set(False)
+F.Intrinsic.Control.EndIf
+F.ODBC.conx!rstChkStat.Close
+
+F.Intrinsic.Control.If(V.Local.bStat,=,False)
+	F.Intrinsic.Control.If(V.Caller.Hook,=,16911,"OR",V.Caller.Hook,=,16913)
+		'Lock
+		V.Passed.777777.Set(1)
+		F.Intrinsic.UI.Msgbox("Unable to Print/e-mail.  PO has not been approved.")
+	F.Intrinsic.Control.EndIf
+	F.Intrinsic.UI.ChangeCallerProperty(V.Passed.000047,"LOCK",1)
+	F.Intrinsic.UI.ChangeCallerProperty(V.Passed.000064,"LOCK",1)
+'	V.Passed.777777.Set(1)
+'	F.Intrinsic.UI.Msgbox("Unable to e-mail.  PO has not been approved.")
+F.Intrinsic.Control.Else
+	'Unlock
+	F.Intrinsic.UI.ChangeCallerProperty(V.Passed.000047,"LOCK",0)
+	F.Intrinsic.UI.ChangeCallerProperty(V.Passed.000064,"LOCK",0)
+F.Intrinsic.Control.EndIf
+
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Chk_Approval_Status_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3000_PO_APPROVAL_REQ.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.Chk_Approval_Status.End
+
+Program.Sub.Comments.Start
+${$0$}$GCG_3000_PO_APPROVAL_REQ$}$SFF$}$11/9/2015
+${$1$}$$}$$}$5$}$16090$}$BSI005-PRE-PROCESS-HOOK$}$11/9/2015 3:40:09 PM$}$(Program: BSI005; Screen: )
+
+${$1$}$$}$$}$4$}$16855$}$PUS064GH-PO-CHANGE$}$11/9/2015 3:39:54 PM$}$(Program: PUR064GH ; Screen: PUS064GH)
+
+${$1$}$$}$$}$3$}$16911$}$PUS064GH-EMAIL-BTN-PRE-HOOK (PO MAINTENANCE)$}$11/9/2015 3:39:44 PM$}$(Program: PUR064GH ; Screen: PUS064GH)
+
+${$1$}$$}$$}$2$}$16880$}$PUS064GH-SAVE-BTN-POST-HOOK (PO MAINTENANCE)$}$11/9/2015 3:39:30 PM$}$(Program: PUR064GH ; Screen: PUS064GH)
+
+${$1$}$$}$$}$1$}$16870$}$PUS064GH-SAVE-BTN-PRE-HOOK (PO MAINTENANCE)$}$11/9/2015 3:39:23 PM$}$(Program: PUR064GH ; Screen: PUS064GH)
+
+${$1$}$$}$$}$0$}$16850$}$PUS064GH-POPULATE-HOOK (PO MAINTENANCE)$}$11/9/2015 3:38:05 PM$}$(Program: PUR064GH ; Screen: PUS064GH)
+
+${$2$}$$}$$}$2$}$2$}$GCG_3000_PO_APPROVAL_CL.gas$}$11/9/2015 3:41:01 PM$}$required for this project
+${$2$}$$}$$}$1$}$2$}$GCG_3000_PO_APPROVAL.gas$}$11/9/2015 3:40:43 PM$}$Required in this project
+${$2$}$$}$$}$0$}$4$}$Tables$}$11/9/2015 3:38:05 PM$}$CREATE TABLE "GCG_3000_PO_APRV"(
+ "PURCHASE_ORDER" CHAR(7) NOT NULL ,
+ "VENDOR" CHAR(6) NOT NULL ,
+ "ORIGINATOR" CHAR(8) NOT NULL ,
+ "DATE_DUE" DATE NOT NULL ,
+ "AMOUNT" DOUBLE NOT NULL ,
+ "APPROVED" BIT NOT NULL DEFAULT 0,
+ "USER_LAST_ACTION" CHAR(8),
+ "DATE_LAST_ACTION" DATE,
+ "EXPLANATION" CHAR(500),
+ PRIMARY KEY ("PURCHASE_ORDER"));
+
+ CREATE TABLE "GCG_3000_TIERS"(
+ "TIER" INTEGER NOT NULL ,
+ "MIN_AMT" NUMERIC(12,4),
+ "MAX_AMT" NUMERIC(12,4),
+ PRIMARY KEY ("TIER"));
+
+ CREATE TABLE "GCG_3000_TIER_USER"(
+ "TIER" INTEGER NOT NULL ,
+ "USER" CHAR(8) NOT NULL ,
+ "EMAIL" CHAR(50),
+ PRIMARY KEY ("TIER", "USER"));
+${$3$}$0$}$$}$-1$}$-1$}$$}$1/1/1900$}$11/9/2015 Changed by SFF
+
+Project 3000
+Quote 7054
+This quote is for the modification of custom project ATG_Po_Approval
+Additions to this project included a “Tier” system. The user has specific “Tiers” of approvers listed in the specifications section of this quote. Users will not be able to e-mail POs unless they have been approved by the appropriate “Tier”. As well as disabling the e-mail button if a PO has not been approved and the creation of a custom table to store this information.
+
+Menu Path: Purchasing>Transactions>PO Approval
+
+Hook:
+ID: 16850 (Populate – Purchase Order Header Maintenance –Update screen)
+ID: 000047 (E-mail button) – to be disabled if the PO is not approved by the appropriate approver/approvers
+
+Columns will show the following:
+1.PO# (Same as ATG_Po_Approval)
+2.Vendor (Same as ATG_Po_Approval)
+3.Originator (Same as ATG_Po_Approval)
+4.Due Date (Same as ATG_Po_Approval)
+5.Amount (Same as ATG_Po_Approval)
+6.Approve button (Same as ATG_Po_Approval, with the addition of placing a “Y” in the approved column of the custom table)
+7.Not Approved button (This is a new button that is to be added) – If selected this button will place a “N” in the approved column of the custom table
+8.View button (Same as ATG_Po_Approval)
+9.Lines button (Same as ATG_Po_Approval)
+10.Explanation button (This is a new button that is to be added) – When selected a form would appear allowing the user to enter an explanation for why the PO was either approved or not approved, then this information will be stored in the explanation column in the custom table
+
+When the user clicks the “Approve” or “Approve All” button on the screen the user ID will be checked. If the approver meets the “Tier” qualifications the same logic that currently takes place will occur with the addition of the users name being put in the Approver column of the custom SQL table. If the approver does not meet the “Tier” qualifications, a message box will be displayed stating that the PO needs to be approved by “” listing the appropriate approvers name.
+
+Custom SQL table will have the following columns:
+PO#, Vendor, Originator, Due_Date, Amount, Approved, Who_Approved, Explanation
+
+Tier 1 must be approved first, then tier 2, then tier 3, and so on.
+Tier 1 if PO Amount is $0-$999 Approver: Kent Schrock kschrock@machlab.com
+Tier 2 if PO amount is $1,000-$9,999 Approver: Walter Thomas wthomas@machlab.com
+Tier 3 if PO amount is $10,000-$49,999 Approver: Mark Nouhan mnouhan@machlab.com
+Tier 4 if PO amount is $50,000-$99,999 Can be approved by either Tier 4 approver, both approvals are not required. Approvers: Kent Seston kseston@machlab.com, Mark Deuel mdeuel@machlab.com
+Tier 5 if PO amount is $100,000+ Approver: James Finley jfinley@machlab.com
+The e-mail format will be changed to list the following:
+User ID (To remain the same)
+User Name (To remain the same)
+PO Number (To remain the same)
+Vendor (This will be an addition, to be pulled from the custom SQL table)
+Amount (To remain the same)
+Explanation (This will be an addition, to be pulled from the custom SQL table)
+Comments (This will be an addition and will show the same text from the “Comments” button on the PO Header screen, COMMENTS.V_BI_PACKINGLIST)
+
+
+***************************
+Old Notes from script in Main Sub
+'Coded by: SMC
+'Modified by: Melinda Keyes
+'Quote: 3046
+'Project Start Date: 12/13/2011
+'Hooks:
+'  PUS064GH-POPULATE-HOOK (PO MAINTENANCE) (000016850)
+'  PUS064GH-PO-CHANGE (PO MAINTENANCE) (000016855)
+'  PUS064GH-SAVE-BTN-PRE-HOOK (PO MAINTENANCE) (000016870)
+'  PUS064GH-SAVE-BTN-POST-HOOK (PO MAINTENANCE) (000016880)
+'  PUS064GH-EMAIL-BTN-PRE-HOOK (PO MAINTENANCE) (000016911)
+'  BSI005-PRE-PROCESS-HOOK (000016090)
+'Other Components:
+'  - TABLE ATG_DOLLAR_LIMIT(ORIG_ID IDENTITY,GS_USER CHAR(8),LIMIT DOUBLE,M_TYPE INTEGER);
+'  - TABLE ATG_APPROVERS(APPROVER_ID IDENTITY,GS_USER CHAR(8),APPROVER CHAR(8),M_TYPE INTEGER);
+'  - TABLE ATG_APPROVAL(APPROVAL_ID IDENTITY,PURCHASE_ORDER CHAR(7),ORIGINATOR CHAR(8),AMOUNT DOUBLE,APPROVER CHAR(8),APPROVED_DATE DATETIME,M_TYPE INTEGER)
+'  (Type=2 for POs)
+'  -Updated PUR064GH (With hidden fields added)
+'
+'  - A GAB script for PO Originator Maintenance - ATG_PO_ORIGINATOR_MAINT
+'  - A GAB Script for PO Approval - ATG_PO_APPROVAL
+'  - A GAB Script to run of Purchase Order Header - ATG_PO_APPROVAL_REQ
+'
+'Notes:
+'  Changes to the Purchase Order Header Maintenance screen
+'  CORE will be adding fields to the Purchase Order screen to display the following PO Approval information: an "Approved" checkbox, an "Approver" field, and a "Approved date" field.  These values cannot be changed from PO
+'  Maintenance, and is updated automatically. If the PO's amount is within the user's PO $ limit, it will automatically be approved.  POs will not be able to be printed or e-mailed until the PO has been approved.   After the PO is saved,
+'  it will write the Purchase Order No. and the Originator (the GS User that entered the PO) to the custom table, ATG_PO_APPROVAL.  If the PO is within the Originator's $ limit, the PO amount, Approver (same as the Originator)
+'  and current date/time as the Approval Date will be written to this table as well.
+'
+'  When clicking the Print or E-mail button, a GAB program will check to make sure the PO has been approved.  If it has not been approved, or the PO's amount has changed and is greater than the amount that was approved
+'  (See ATG_PO_APPROVAL), the user will be notified and the Print or E-mail process will cancel out.   Note:  When a user enters a new PO within their $ limit, they will need to Save the PO (to automatically approve it) before
+'  printing or e-mailing.
+'
+'  Note:  The program will not keep track of any changes made to approved POs, other than the total amount the PO is for.  The program will run on Post-Save Lines and Post-Save Header to re-evaluate the PO's total amount.
+'  If the amount of the PO has increased since its approval, it will notify the user that it needs to be reapproved (if it is outside of the user's $ limit) and clear out the PO Amount, Approver, and Approval Date for the selected PO
+'  in ATG_PO_APPROVAL.  Any other changes to the PO will NOT affect its approval status.
+'  Note:  This PO Approval process has NO effect on Automatic Purchasing.
+
+'THIS VERSION INCLUDES MESSAGING WITH DRILL DOWNS
+${$4$}$0$}$$}$0$}$-1$}$SFF$}$11/9/2015 3:42:12 PM$}$Changed from ATG_* prefix to GCG_3000 project 3000 in ARC.
+Program.Sub.Comments.End
+
