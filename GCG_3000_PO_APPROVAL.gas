@@ -1,0 +1,1484 @@
+Program.Sub.ScreenSU.Start
+gui.F_Approval..create
+gui.F_Approval..caption("PO Approval")
+gui.F_Approval..size(10600,6475)
+gui.F_Approval..minx(0)
+gui.F_Approval..miny(0)
+gui.F_Approval..position(0,0)
+gui.F_Approval..event(resize,f_approval_resize)
+gui.F_Approval..event(unload,f_approval_unload)
+gui.F_Approval..alwaysontop(False)
+gui.F_Approval..fontname("Arial")
+gui.F_Approval..fontsize(8)
+gui.F_Approval..forecolor(0)
+gui.F_Approval..fontstyle(,,,,)
+gui.F_Approval..BackColor(-2147483633)
+gui.F_Approval..controlbox(True)
+gui.F_Approval..maxbutton(True)
+gui.F_Approval..minbutton(True)
+gui.F_Approval..mousepointer(0)
+gui.F_Approval..moveable(True)
+gui.F_Approval..sizeable(True)
+gui.F_Approval..ShowInTaskBar(True)
+gui.F_Approval..titlebar(True)
+gui.F_Approval.frmButtons.create(frame)
+gui.F_Approval.frmButtons.caption("")
+gui.F_Approval.frmButtons.size(2655,475)
+gui.F_Approval.frmButtons.position(100,5400)
+gui.F_Approval.frmButtons.visible(True)
+gui.F_Approval.frmButtons.borderstyle(0)
+gui.F_Approval.frmButtons.fontname("Arial")
+gui.F_Approval.frmButtons.fontsize(8)
+gui.F_Approval.gsfgApprove.create(gsflexgrid)
+gui.F_Approval.gsfgApprove.FixedRows(0)
+gui.F_Approval.gsfgApprove.FixedCols(0)
+gui.F_Approval.gsfgApprove.visible(True)
+gui.F_Approval.gsfgApprove.size(10150,5205)
+gui.F_Approval.gsfgApprove.zorder(0)
+gui.F_Approval.gsfgApprove.position(100,100)
+gui.F_Approval.gsfgApprove.enabled(True)
+gui.F_Approval.gsfgApprove.event(commandclick,gsfgapprove_commandclick)
+gui.F_Approval.cmdApproveAll.create(button)
+gui.F_Approval.cmdApproveAll.caption("Approve All")
+gui.F_Approval.cmdApproveAll.visible(True)
+gui.F_Approval.cmdApproveAll.size(1100,450)
+gui.F_Approval.cmdApproveAll.zorder(0)
+gui.F_Approval.cmdApproveAll.position(0,0)
+gui.F_Approval.cmdApproveAll.enabled(True)
+gui.F_Approval.cmdApproveAll.parent("frmbuttons")
+gui.F_Approval.cmdApproveAll.fontname("Arial")
+gui.F_Approval.cmdApproveAll.fontsize(8)
+gui.F_Approval.cmdApproveAll.event(click,cmdapproveall_click)
+gui.F_Approval.cmdApproveAll.disableonclick(20)
+gui.F_Approval.cmdApproveAll.defaultvalue("")
+gui.F_Approval.cmdApproveAll.controlgroup(0)
+gui.F_Approval.cmdRefresh.create(button)
+gui.F_Approval.cmdRefresh.caption("Refresh")
+gui.F_Approval.cmdRefresh.visible(True)
+gui.F_Approval.cmdRefresh.size(1100,450)
+gui.F_Approval.cmdRefresh.zorder(0)
+gui.F_Approval.cmdRefresh.position(1200,0)
+gui.F_Approval.cmdRefresh.enabled(True)
+gui.F_Approval.cmdRefresh.parent("frmbuttons")
+gui.F_Approval.cmdRefresh.fontname("Arial")
+gui.F_Approval.cmdRefresh.fontsize(8)
+gui.F_Approval.cmdRefresh.event(click,cmdrefresh_click)
+gui.F_Approval.cmdRefresh.disableonclick(20)
+gui.F_Approval.cmdRefresh.defaultvalue("")
+gui.F_Approval.cmdRefresh.controlgroup(0)
+
+
+gui.F_Lines..create
+gui.F_Lines..caption("PO Lines View")
+gui.F_Lines..size(12000,8175)
+gui.F_Lines..minx(0)
+gui.F_Lines..miny(0)
+gui.F_Lines..position(0,0)
+gui.F_Lines..event(resize,Lines_Resize)
+gui.F_Lines..event(unload,Unload)
+gui.F_Lines..alwaysontop(False)
+gui.F_Lines..fontname("Arial")
+gui.F_Lines..fontsize(8)
+gui.F_Lines..forecolor(0)
+gui.F_Lines..fontstyle(,,,,)
+gui.F_Lines..BackColor(-2147483633)
+gui.F_Lines..controlbox(True)
+gui.F_Lines..maxbutton(True)
+gui.F_Lines..minbutton(True)
+gui.F_Lines..mousepointer(0)
+gui.F_Lines..moveable(True)
+gui.F_Lines..sizeable(True)
+gui.F_Lines..ShowInTaskBar(True)
+gui.F_Lines..titlebar(True)
+gui.F_Lines.gsflxLine.create(gsflexgrid)
+gui.F_Lines.gsflxLine.FixedRows(0)
+gui.F_Lines.gsflxLine.FixedCols(0)
+gui.F_Lines.gsflxLine.visible(True)
+gui.F_Lines.gsflxLine.size(11355,7125)
+gui.F_Lines.gsflxLine.zorder(0)
+gui.F_Lines.gsflxLine.position(200,200)
+gui.F_Lines.gsflxLine.enabled(True)
+
+
+gui.F_Explanation..create
+gui.F_Explanation..caption("Explanation")
+gui.F_Explanation..size(5220,5460)
+gui.F_Explanation..minx(0)
+gui.F_Explanation..miny(0)
+gui.F_Explanation..position(0,0)
+gui.F_Explanation..event(unload,f_explanation_unload)
+gui.F_Explanation..alwaysontop(False)
+gui.F_Explanation..fontname("Arial")
+gui.F_Explanation..fontsize(8)
+gui.F_Explanation..forecolor(0)
+gui.F_Explanation..fontstyle(,,,,)
+gui.F_Explanation..BackColor(-2147483633)
+gui.F_Explanation..controlbox(True)
+gui.F_Explanation..maxbutton(False)
+gui.F_Explanation..minbutton(False)
+gui.F_Explanation..mousepointer(0)
+gui.F_Explanation..moveable(True)
+gui.F_Explanation..sizeable(False)
+gui.F_Explanation..ShowInTaskBar(True)
+gui.F_Explanation..titlebar(True)
+gui.F_Explanation.mltxt_Explanation.create(textboxm)
+gui.F_Explanation.mltxt_Explanation.text("")
+gui.F_Explanation.mltxt_Explanation.visible(True)
+gui.F_Explanation.mltxt_Explanation.size(4470,4155)
+gui.F_Explanation.mltxt_Explanation.zorder(0)
+gui.F_Explanation.mltxt_Explanation.position(200,200)
+gui.F_Explanation.mltxt_Explanation.enabled(True)
+gui.F_Explanation.mltxt_Explanation.alignment(0)
+gui.F_Explanation.mltxt_Explanation.fontname("Arial")
+gui.F_Explanation.mltxt_Explanation.fontsize(8)
+gui.F_Explanation.mltxt_Explanation.BackColor(-2147483643)
+gui.F_Explanation.mltxt_Explanation.defaultvalue("")
+gui.F_Explanation.mltxt_Explanation.controlgroup(0)
+gui.F_Explanation.cmd_SaveExplanation.create(button)
+gui.F_Explanation.cmd_SaveExplanation.caption("Save")
+gui.F_Explanation.cmd_SaveExplanation.visible(True)
+gui.F_Explanation.cmd_SaveExplanation.size(855,375)
+gui.F_Explanation.cmd_SaveExplanation.zorder(0)
+gui.F_Explanation.cmd_SaveExplanation.position(215,4505)
+gui.F_Explanation.cmd_SaveExplanation.enabled(True)
+gui.F_Explanation.cmd_SaveExplanation.fontname("Arial")
+gui.F_Explanation.cmd_SaveExplanation.fontsize(8)
+gui.F_Explanation.cmd_SaveExplanation.event(click,cmd_saveexplanation_click)
+gui.F_Explanation.cmd_SaveExplanation.defaultvalue("")
+gui.F_Explanation.cmd_SaveExplanation.controlgroup(0)
+
+
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+
+Variable.Global.fLimit.Declare(Float,-1)
+Variable.UDT.Approval.Define("Number",String)
+Variable.UDT.Approval.Define("Vend_Cust",String)
+Variable.UDT.Approval.Define("Due_Date",String)
+Variable.UDT.Approval.Define("Amount",Float)
+Variable.UDT.Approval.Define("Originator",String)
+Variable.UDT.Approval.Define("Vend_Cust_Name",String)
+Variable.UDT.Vend_Cust.Define("ID",String)
+Variable.UDT.Vend_Cust.Define("Name",String)
+Variable.uGlobal.uVendCust.Declare("Vend_Cust")
+Variable.uGlobal.uApprove.Declare("Approval")
+Variable.UDT.Lines.Define("Number",String)
+Variable.UDT.Lines.Define("Description",String)
+Variable.UDT.Lines.Define("Qty",Float)
+Variable.UDT.Lines.Define("UM",String)
+Variable.UDT.Lines.Define("Cost",Float)
+Variable.UDT.Lines.Define("Ext_Cost",Float)
+Variable.uGlobal.uLines.Declare("Lines")
+Variable.Global.fMin.Declare(Float,0)
+Variable.Global.fMax.Declare(Float,0)
+Variable.UDT.uComments.Define("PO",String)
+Variable.UDT.uComments.Define("COMMENTS",String)
+Variable.uGlobal.uComments.Declare("uComments")
+Variable.Global.sCurrPO.Declare(String)
+Variable.Global.iTier.Declare(Long,0)
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+F.Intrinsic.Control.SetErrorHandler("Main_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.iPID.Declare(Long)
+
+F.ODBC.Connection!conx.OpenConnection(V.Ambient.PDSN,V.Ambient.PUser,V.Ambient.PPass)
+
+'F.Intrinsic.Control.If(V.Caller.Hook,=,16850)
+'	' Populate PO Header Maintenance (View)
+'	F.Intrinsic.Control.If(V.Caller.Switches,=,"V")
+'		V.Passed.000065.Set("Approve")
+'	F.Intrinsic.Control.EndIf
+'	F.Intrinsic.Control.End
+'F.Intrinsic.Control.EndIf
+
+' Script 1 button
+F.Intrinsic.Control.If(V.Caller.Hook,=,16890)
+	F.Intrinsic.Control.If(V.Caller.Switches,=,"V")
+		V.Local.sFQN.Declare(String)
+		V.Local.bExists.Declare(Boolean)
+		V.Local.iHdl.Declare(Long)
+		V.Local.sFile.Declare(String)
+		F.Intrinsic.String.Build("{0}\PO_Approval{1}.txt",V.Caller.TempDir,V.Caller.Terminal,V.Local.sFQN)
+'		F.Intrinsic.String.Concat(V.Caller.TempDir,"\PO_Approval",V.Caller.Terminal,".txt",V.Local.sFQN)
+		F.Intrinsic.File.GetHandle(V.Local.iHdl)
+		F.Intrinsic.File.Exists(V.Local.sFQN,V.Local.bExists)
+		F.Intrinsic.Control.If(V.Local.bExists,=,True)
+			F.Intrinsic.File.DeleteFile(V.Local.sFQN)
+			F.Intrinsic.File.OpenForAppend(V.Local.sFQN,V.Local.iHdl)
+		F.Intrinsic.Control.Else
+			F.Intrinsic.File.OpenForAppend(V.Local.sFQN,V.Local.iHdl)
+		F.Intrinsic.Control.EndIf
+		F.Intrinsic.File.WriteLine(V.Local.iHdl,"True")
+		F.Intrinsic.File.CloseFile(V.Local.iHdl)
+		F.Intrinsic.String.Build("{0}\GAB\GAS\MACHLAB\PO_APPROVAL\GCG_3000_PO_APPROVAL_CL.gas",V.Caller.PluginsDir,V.Local.sFile)
+'		F.Intrinsic.String.Concat(V.Caller.PluginsDir,"\GAB\GAS\GCG_3000_PO_APPROVAL_CL.gas",V.Local.sFile)
+		F.Global.General.CallAsyncGAS(V.Local.sFile,V.Local.iPID)
+	F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.End
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.CallSub(Load_info)
+Gui.F_Approval..Show
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Main_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3000_PO_APPROVAL.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+Program.Sub.Main.End
+
+program.sub.f_approval_unload.start
+F.Intrinsic.Control.SetErrorHandler("f_approval_unload_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+'End Program
+F.ODBC.Connection!conx.Close
+F.Intrinsic.Control.End
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("f_approval_unload_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3000_PO_APPROVAL.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+
+program.sub.f_approval_unload.end
+
+program.sub.f_approval_resize.start
+F.Intrinsic.Control.SetErrorHandler("f_approval_resize_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.x.Declare(Long)
+V.Local.y.Declare(Long)
+V.Local.gX.Declare(Long)
+
+'resize
+F.Intrinsic.Control.If(V.Screen.F_Approval.Width,<,10600)
+	Gui.F_Approval..Size(10600,V.Screen.F_Approval.Height)
+F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.If(V.Screen.F_Approval.Height,<,4000)
+	Gui.F_Approval..Size(V.Screen.F_Approval.Width,4000)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Math.Sub(V.Screen.F_Approval.Width,450,V.Local.x)
+F.Intrinsic.Math.Sub(V.Screen.F_Approval.Height,1270,V.Local.y)
+Gui.F_Approval.gsfgApprove.Size(V.Local.x,V.Local.y)
+
+F.Intrinsic.Math.Add(V.Local.y,195,V.Local.y)
+Gui.F_Approval.frmButtons.Position(V.Screen.F_Approval!frmButtons.Left,V.Local.y)
+
+'Subtract any space in gsfg that will not resize from total gsfg width
+F.Intrinsic.Math.Add(800,350,V.Local.gX)
+F.Intrinsic.Math.Sub(V.Local.x,V.Local.gX,V.Local.gX)
+Gui.F_Approval.gsfgApprove.SetColumnPercentages(".08:.14:.14:.12:.10:.08:.06:.06:.10:.14")
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("f_approval_resize_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3000_PO_APPROVAL.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+program.sub.f_approval_resize.end
+
+Program.Sub.BuildStyles_GSFG.Start
+F.Intrinsic.Control.SetErrorHandler("BuildStyles_GSFG_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.iC.Declare(Long)
+
+'BuildStyles Main Grid
+Gui.F_Approval.gsfgApprove.Cols(10)
+Gui.F_Approval.gsfgApprove.Rows(1)
+Gui.F_Approval.gsfgApprove.TextMatrix(0,0,"PO #")
+'Gui.F_Approval.gsfgApprove.ColWidth(0,1000)
+Gui.F_Approval.gsfgApprove.TextMatrix(1,0,"Vendor")
+'Gui.F_Approval.gsfgApprove.ColWidth(1,2600)
+Gui.F_Approval.gsfgApprove.TextMatrix(2,0,"Originator")
+'Gui.F_Approval.gsfgApprove.ColWidth(2,1800)
+Gui.F_Approval.gsfgApprove.TextMatrix(3,0,"Due Date")
+'Gui.F_Approval.gsfgApprove.ColWidth(3,1600)
+Gui.F_Approval.gsfgApprove.TextMatrix(4,0,"Amount")
+'Gui.F_Approval.gsfgApprove.ColWidth(4,1200)
+Gui.F_Approval.gsfgApprove.TextMatrix(5,0,"")
+'Gui.F_Approval.gsfgApprove.ColWidth(5,800)
+Gui.F_Approval.gsfgApprove.TextMatrix(6,0,"")
+'Gui.F_Approval.gsfgApprove.ColWidth(6,800)
+Gui.F_Approval.gsfgApprove.TextMatrix(7,0,"")
+Gui.F_Approval.gsfgApprove.Rows(2)
+Gui.F_Approval.gsfgApprove.FixedRows(1)
+
+F.Intrinsic.Control.For(V.Local.iC,0,4,1)
+	Gui.F_Approval.gsfgApprove.BuildStyle(1,V.Local.iC,"TYPE","LOCKED","True")
+	Gui.F_Approval.gsfgApprove.BuildStyle(1,V.Local.iC,"FORMAT","ALIGNMENT",2)
+F.Intrinsic.Control.Next(V.Local.iC)
+Gui.F_Approval.gsfgApprove.BuildStyle(1,5,"TYPE","COMMAND","Approve")
+Gui.F_Approval.gsfgApprove.BuildStyle(1,5,"FORMAT","ALIGNMENT",4)
+Gui.F_Approval.gsfgApprove.BuildStyle(1,6,"TYPE","COMMAND","View")
+Gui.F_Approval.gsfgApprove.BuildStyle(1,6,"FORMAT","ALIGNMENT",4)
+Gui.F_Approval.gsfgApprove.BuildStyle(1,7,"TYPE","COMMAND","Lines")
+Gui.F_Approval.gsfgApprove.BuildStyle(1,7,"FORMAT","ALIGNMENT",4)
+Gui.F_Approval.gsfgApprove.BuildStyle(1,8,"TYPE","COMMAND","Explanation")
+Gui.F_Approval.gsfgApprove.BuildStyle(1,8,"FORMAT","ALIGNMENT",4)
+Gui.F_Approval.gsfgApprove.BuildStyle(1,9,"TYPE","COMMAND","NOT Apprvd.")
+Gui.F_Approval.gsfgApprove.BuildStyle(1,9,"FORMAT","ALIGNMENT",4)
+
+
+F.Intrinsic.Variable.SetUDTFieldReference(V.uGlobal.uApprove!Number,"GS_NUMBER")
+F.Intrinsic.Variable.SetUDTFieldReference(V.uGlobal.uApprove!Originator,"ORIGINATOR")
+F.Intrinsic.Variable.SetUDTFieldReference(V.uGlobal.uApprove!Vend_Cust,"VEND_CUST")
+F.Intrinsic.Variable.SetUDTFieldReference(V.uGlobal.uApprove!Amount,"AMOUNT")
+F.Intrinsic.Variable.SetUDTFieldReference(V.uGlobal.uApprove!Due_Date,"DATE_DUE")
+
+Gui.F_Approval.gsfgApprove.ApplyStyle(1,1)
+Gui.F_Approval.gsfgApprove.SetColumnPercentages(".08:.14:.14:.12:.10:.08:.06:.06:.10:.14")
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("BuildStyles_GSFG_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3000_PO_APPROVAL.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+Program.Sub.BuildStyles_GSFG.End
+
+program.sub.gsfgapprove_commandclick.start
+F.Intrinsic.Control.SetErrorHandler("gsfgapprove_commandclick_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+F.Intrinsic.Control.If(V.Args.Column,=,5)
+	F.Intrinsic.Control.CallSub(Approve,"iR",V.Args.Key,"bSilent",False)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.If(V.Args.Column,=,6)
+	F.Intrinsic.Control.CallSub(View_po,"iR",V.Args.Key,"bSilent",False)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.If(V.Args.Column,=,7)
+	F.Intrinsic.Control.CallSub(View_lines,"iR",V.Args.Key,"bSilent",False)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.If(V.Args.Column,=,8)
+	F.Intrinsic.Control.CallSub(Explanation,"Key",V.Args.Key,"bSilent",False)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.If(V.Args.Column,=,9)
+	F.Intrinsic.Control.CallSub(Not_approved,"Key",V.Args.Key,"bSilent",False)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("gsfgapprove_commandclick_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3000_PO_APPROVAL.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+program.sub.gsfgapprove_commandclick.end
+
+Program.Sub.Load_Info.Start
+F.Intrinsic.Control.SetErrorHandler("Load_Info_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+F.Intrinsic.UI.InvokeWaitDialog("Loading...","Loading")
+V.uGlobal.uExp.Redim(-1,-1)
+F.Intrinsic.Control.CallSub(Getusertier)
+
+F.Intrinsic.Control.CallSub(Get_$_limit)
+F.Intrinsic.Control.CallSub(Buildstyles_gsfg)
+F.Intrinsic.Control.CallSub(Load_vend_cust)
+F.Intrinsic.Control.CallSub(Load_gsfg)
+F.Intrinsic.UI.CloseWaitDialog
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Load_Info_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3000_PO_APPROVAL.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+Program.Sub.Load_Info.End
+
+Program.Sub.Get_$_Limit.Start
+F.Intrinsic.Control.SetErrorHandler("Get_$_Limit_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.sQuery.Declare(String)
+V.Local.sUser.Declare(String)
+V.Local.bExists.Declare(Boolean)
+V.Local.iTier.Declare(Long)
+V.Local.fLimit.Declare(Float)
+V.Local.fMin.Declare(Float)
+V.Local.fMax.Declare(Float)
+
+F.Intrinsic.Variable.ArgExists("sUser",V.Local.bExists)
+F.Intrinsic.Control.If(V.Local.bExists,=,True)
+	V.Local.sUser.Set(V.Args.sUser)
+F.Intrinsic.Control.Else
+	V.Local.sUser.Set(V.Caller.User)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.String.Build("SELECT TIER FROM GCG_3000_TIER_USER WHERE {1}USER{1} = '{0}' ",V.Local.sUser,V.Ambient.DblQuote,V.Local.sQuery)
+
+'F.Intrinsic.String.Concat("SELECT LIMIT FROM GCG_3000_DOLLAR_LIMIT WHERE USER='",V.Local.sUser,"'",V.Local.sQuery)
+F.ODBC.Connection!conx.OpenRecordsetRO("rstLimit",V.Local.sQuery)
+F.Intrinsic.Control.If(V.ODBC.conx!rstLimit.EOF,<>,True)
+	V.Local.iTier.Set(V.ODBC.conx!rstLimit.FieldValFloat!TIER)
+
+	F.Intrinsic.String.Build("Select MIN_AMT,MAX_AMT from GCG_3000_TIERS where TIER = '{0}'",V.local.iTier,V.local.sQuery)
+	F.ODBC.Connection!conx.OpenRecordsetRO("rstTier",V.Local.sQuery)
+	F.Intrinsic.Control.If(V.ODBC.conx!rstTier.EOF,<>,True)
+		V.Local.fMin.Set(V.ODBC.conx!rstTier.FieldValFloat!MIN_AMT)
+		V.Local.fMax.Set(V.ODBC.conx!rstTier.FieldValFloat!MAX_AMT)
+		V.Global.fMin.Set(V.Local.fMin)
+		V.Global.fMax.Set(V.Local.fMax)
+	F.Intrinsic.Control.EndIf
+	F.ODBC.conx!rstTier.Close
+F.Intrinsic.Control.Else
+	V.Local.fLimit.Set(-1)
+	V.Global.fMin.Set(-1)
+	V.Global.fMax.Set(-1)
+F.Intrinsic.Control.EndIf
+F.ODBC.conx!rstLimit.Close
+
+F.Intrinsic.Control.If(V.Local.bExists,=,True)
+	F.Intrinsic.Variable.AddRV("Min",V.Local.fMin,"Max",V.Local.fMax)
+	F.Intrinsic.Variable.AddRV("Limit",V.Local.fLimit)
+F.Intrinsic.Control.Else
+	V.Global.fLimit.Set(V.Local.fLimit)
+	V.Global.fMin.Set(V.Local.fMin)
+	V.Global.fMax.Set(V.Local.fMax)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Get_$_Limit_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3000_PO_APPROVAL.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+Program.Sub.Get_$_Limit.End
+
+Program.Sub.Load_Vend_Cust.Start
+F.Intrinsic.Control.SetErrorHandler("Load_Vend_Cust_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+F.Intrinsic.Variable.SetUDTFieldReference(V.uGlobal.uVendCust!ID,"VENDOR")
+F.Intrinsic.Variable.SetUDTFieldReference(V.uGlobal.uVendCust!Name,"NAME_VENDOR")
+F.ODBC.Connection!conx.OpenRecordsetRO("rstLoad","SELECT VENDOR, NAME_VENDOR FROM V_VENDOR_MASTER")
+F.Intrinsic.Variable.LoadUDTFromRecordset("conx","rstLoad","v.uglobal.uVendCust",False)
+F.ODBC.conx!rstLoad.Close
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Load_Vend_Cust_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3000_PO_APPROVAL.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+Program.Sub.Load_Vend_Cust.End
+
+Program.Sub.Load_UApprove.Start
+F.Intrinsic.Control.SetErrorHandler("Load_UApprove_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.sQuery.Declare(String)
+V.Local.iC.Declare(Long)
+V.Local.sRet.Declare(String)
+
+V.Local.sQuery.Set("SELECT PURCHASE_ORDER as GS_NUMBER,ORIGINATOR, VENDOR as VEND_CUST,AMOUNT,DATE_DUE FROM GCG_3000_PO_APRV WHERE APPROVED = 0 OR TIER_APPROVER < TIER_ORDER ORDER BY PURCHASE_ORDER ASC ")
+
+'F.Intrinsic.String.Concat("SELECT PURCHASE_ORDER as GS_NUMBER,ORIGINATOR, VENDOR as VEND_CUST,AMOUNT,DATE_DUE FROM GCG_3000_APPROVAL WHERE (APPROVER='' OR APPROVER IS NULL) AND AMOUNT<=",V.Global.fLimit," ORDER BY PURCHASE_ORDER ASC",V.Local.sQuery)
+F.ODBC.Connection!conx.OpenRecordsetRO("rstLoad",V.Local.sQuery)
+F.Intrinsic.Variable.LoadUDTFromRecordset("conx","rstLoad","v.uglobal.uApprove",False)
+F.ODBC.conx!rstLoad.Close
+
+F.Intrinsic.Control.For(V.Local.iC,0,V.uGlobal.uApprove.UBound,1)
+	F.Intrinsic.Variable.UDTSeek(V.uGlobal.uVendCust!ID,V.uGlobal.uApprove(v.Local.iC)!Vend_Cust,4,V.Local.sRet)
+	F.Intrinsic.Control.If(V.Local.sRet.IsNumeric,=,True)
+		V.uGlobal.uApprove(v.Local.iC)!Vend_Cust_Name.Set(V.uGlobal.uVendCust(v.Local.sRet.Long)!Name)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Next(V.Local.iC)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Load_UApprove_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3000_PO_APPROVAL.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+Program.Sub.Load_UApprove.End
+
+Program.Sub.Load_GSFG.Start
+F.Intrinsic.Control.SetErrorHandler("Load_GSFG_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+F.Intrinsic.Control.CallSub(Load_uapprove)
+Gui.F_Approval.gsfgApprove.Visible(False)
+Gui.F_Approval.gsfgApprove.Rows(1)
+Gui.F_Approval.gsfgApprove.Rows(2)
+Gui.F_Approval.gsfgApprove.FixedRows(1)
+Gui.F_Approval.gsfgApprove.LoadFromUDT("uGlobal.uApprove","Number::0*!*Vend_Cust_Name::1*!*Originator::2*!*Due_Date::3*!*Amount::4",1)
+F.Intrinsic.Control.If(V.Screen.F_Approval!gsfgApprove.Rows,=,1)
+	Gui.F_Approval.gsfgApprove.Rows(2)
+	Gui.F_Approval.gsfgApprove.ApplyStyle(1,1)
+	Gui.F_Approval.gsfgApprove.FixedRows(1)
+F.Intrinsic.Control.EndIf
+
+'mark lines NOT approved with *
+F.Intrinsic.Control.CallSub(Check_not_approved)
+'Load PO Header Comments to UDT, will be used in messages.
+F.Intrinsic.Control.CallSub(Loadcommentsudt)
+Gui.F_Approval.gsfgApprove.Visible(True)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Load_GSFG_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3000_PO_APPROVAL.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+Program.Sub.Load_GSFG.End
+
+program.sub.cmdapproveall_click.start
+F.Intrinsic.Control.SetErrorHandler("cmdapproveall_click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.iR.Declare(Long)
+V.Local.iRows.Declare(Long)
+V.Local.sMsg.Declare(String)
+
+'mark all approved
+Gui.F_Approval.gsfgApprove.Visible(False)
+F.Intrinsic.Math.Sub(V.Screen.F_Approval!gsfgApprove.Rows,1,V.Local.iRows)
+F.Intrinsic.Control.For(V.Local.iR,1,V.Local.iRows,1)
+	F.Intrinsic.Control.CallSub(Approve,"iR",V.Local.iR,"bSilent",True,"sSub","All")
+F.Intrinsic.Control.Next(V.Local.iR)
+F.Intrinsic.Control.CallSub(Load_gsfg)
+Gui.F_Approval.gsfgApprove.Visible(True)
+
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("cmdapproveall_click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3000_PO_APPROVAL.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+program.sub.cmdapproveall_click.end
+
+program.sub.cmdrefresh_click.start
+F.Intrinsic.Control.SetErrorHandler("cmdrefresh_click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+'Load flexgrid
+F.Intrinsic.Control.CallSub(Load_gsfg)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("cmdrefresh_click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3000_PO_APPROVAL.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+program.sub.cmdrefresh_click.end
+
+Program.Sub.Approve.Start
+F.Intrinsic.Control.SetErrorHandler("Approve_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.sQuery.Declare(String)
+V.Local.sRet.Declare(String)
+V.Local.sMsg.Declare(String)
+V.Local.sVendor.Declare(String)
+V.Local.sData.Declare(String)
+V.Local.sEmail.Declare(String)
+V.Local.sOrigName.Declare(String)
+V.Local.sUserEmail.Declare(String)
+V.Local.sUserName.Declare(String)
+V.Local.iRet.Declare(Long)
+V.Local.sUser.Declare(String)
+V.Local.iTierOrder.Declare(Long)
+V.Local.sTier.Declare(String)
+V.Local.sTierFullName.Declare(String)
+V.Local.bExists.Declare(String)
+
+'Mark approved if allowed
+Gui.F_Approval.gsfgApprove.GetTextMatrix(0,V.Args.iR,V.Local.sRet)
+F.Intrinsic.Control.If(V.Local.sRet.Trim,=,"")
+	F.Intrinsic.Control.ExitSub
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.String.Build("SELECT * FROM GCG_3000_PO_APRV WHERE PURCHASE_ORDER= '{0}' ",V.Local.sRet,V.Local.sQuery)
+
+'F.Intrinsic.String.Concat("SELECT * FROM ATG_APPROVAL WHERE PURCHASE_ORDER='",V.Local.sRet,"'",V.Local.sQuery)
+F.ODBC.Connection!conx.OpenRecordsetRW("rstApprove",V.Local.sQuery)
+F.Intrinsic.Control.If(V.ODBC.conx!rstApprove.EOF,<>,True)
+	'Set local iTierOrder for check later	
+	V.Local.iTierOrder.Set(V.ODBC.conx!rstApprove.FieldValLong!TIER_ORDER)
+	'Hast to be within range of min and max by Tier
+'	F.Intrinsic.Control.If(V.ODBC.conx!rstApprove.FieldValTrim!AMOUNT,>,V.Global.fMax)
+		F.Intrinsic.String.Format(V.ODBC.conx!rstApprove.FieldValTrim!AMOUNT,"$###,###,###.00",V.Local.sRet)
+'		'Get correct user that can Approve the PO and Notify the user
+		F.Intrinsic.String.Build("select TIER from GCG_3000_TIERS where MIN_AMT <= {0} and MAX_AMT >= {0}",V.ODBC.conx!rstApprove.FieldValTrim!AMOUNT,V.Local.sQuery)
+		F.ODBC.Connection!conx.OpenRecordsetRO("rstTier",V.Local.sQuery)
+		F.Intrinsic.Control.If(V.ODBC.conx!rstTier.EOF,<>,True)
+			F.Intrinsic.String.Build("Select {1}USER{1} from GCG_3000_TIER_USER where TIER = {0}",V.ODBC.conx!rstTier.FieldVal!TIER,V.Ambient.DblQuote,V.Local.sQuery)
+			F.ODBC.Connection!conx.OpenRecordsetRO("rstTierUser",V.Local.sQuery)
+			F.Intrinsic.Control.If(V.ODBC.conx!rstTierUser.EOF,<>,True)
+				'Set User Name that needs to approve	and notify user	
+				F.Global.Security.GetFullName(V.ODBC.conx!rstTierUser.FieldVal!USER,V.Caller.CompanyCode,V.Local.sUser)
+'				F.Intrinsic.String.Build("The amount of PO No. {0} was updated to Amount: {1}, and exceeds your PO $ Limit.  PO Must be approved by {2}. ",V.ODBC.conx!rstApprove.FieldValTrim!PURCHASE_ORDER,V.Local.sRet,V.Local.sUser,V.Local.sMsg)
+'				F.Intrinsic.UI.Msgbox(V.Local.sMsg)
+			F.Intrinsic.Control.EndIf
+			F.ODBC.conx!rstTierUser.Close
+
+		F.Intrinsic.Control.EndIf
+		F.ODBC.conX!rstTier.Close
+	'F.Intrinsic.Control.Else
+		F.Intrinsic.Control.If(V.ODBC.conx!rstApprove.FieldValTrim!APPROVER,<>,"")
+		F.Intrinsic.Control.AndIf(V.ODBC.conx!rstApprove.FieldValIsNull!APPROVER,=,False)
+		F.Intrinsic.Control.AndIf(V.ODBC.conx!rstApprove.FieldValLong!TIER_ORDER,=,V.ODBC.conx!rstApprove.FieldValLong!TIER_APPROVER)
+			'Notify Already Approved
+			F.Intrinsic.String.Build("PO No. {0} was already approved by {1} on {2}.",V.ODBC.conx!rstApprove.FieldValTrim!PURCHASE_ORDER,V.ODBC.conx!rstApprove.FieldValTrim!NAME_APPROVER,V.ODBC.conx!rstApprove.FieldValTrim!DATE_LAST_ACTION,V.Local.sMsg)
+			F.Intrinsic.UI.Msgbox(V.Local.sMsg)
+'			F.Intrinsic.String.Concat("PO No. ",V.ODBC.conx!rstApprove.FieldValTrim!PURCHASE_ORDER," was already approved by ",V.ODBC.conx!rstApprove.FieldValTrim!APPROVER," on ",V.ODBC.conx!rstApprove.FieldValTrim!DATE_LAST_ACTION,".",V.Local.sMsg)
+		F.Intrinsic.Control.Else
+			F.Global.Security.GetFullName(V.Caller.User,V.Caller.CompanyCode,V.Local.sRet)
+			F.ODBC.conx!rstApprove.Set!NAME_APPROVER(V.Local.sRet)
+			F.ODBC.conx!rstApprove.Set!TIER_APPROVER(V.Global.iTier)
+			F.ODBC.conx!rstApprove.Set!APPROVER(V.Caller.User)
+			F.ODBC.conx!rstApprove.Set!APPROVED(1)
+			F.ODBC.conx!rstApprove.Set!DATE_LAST_ACTION(V.Ambient.Now)
+			F.ODBC.conx!rstApprove.Update
+		F.Intrinsic.Control.EndIf
+		'If Tier Order is > user's current tier notify originator that the order still needs to go through another approval tier.
+		F.Intrinsic.Control.If(V.ODBC.conx!rstApprove.FieldValLong!TIER_ORDER,=,V.Global.iTier)
+			'send a message that the PO has been approved
+			F.Intrinsic.String.Build("PO Number: {0} has been approved by {1} at {2}.",V.ODBC.conx!rstApprove.FieldValTrim!PURCHASE_ORDER,V.Local.sRet,V.Ambient.Now,V.Local.sMsg)
+		F.Intrinsic.Control.Else
+			V.Local.sTier.Set("")
+			F.Intrinsic.String.Build("Select * from GCG_3000_TIER_USER where TIER = {0}",V.ODBC.conx!rstApprove.FieldValLong!TIER_ORDER,V.Local.sQuery)
+			F.ODBC.Connection!conx.OpenRecordsetRO("rstChkTier",V.Local.sQuery)
+			F.Intrinsic.Control.If(V.ODBC.conx!rstChkTier.EOF,<>,True)
+				F.Intrinsic.Control.DoUntil(V.ODBC.conx!rstChkTier.EOF,=,True)
+						F.Global.Security.GetFullName(V.ODBC.conx!rstChkTier.FieldValTrim!USER,V.Caller.CompanyCode,V.Local.sTierFullName)
+						F.Intrinsic.String.Build("{0}{1}, ",V.Local.sTier,V.Local.sTierFullName.Trim,V.Local.sTier)
+					F.ODBC.conx!rstChkTier.MoveNext
+				F.Intrinsic.Control.Loop
+			F.Intrinsic.Control.Else
+				'GENERIC MSG IF NO RESULTS FOR USERS IN APPROPRIATE TIER
+				F.Intrinsic.String.Build("someone in Tier:{0}",V.ODBC.conx!rstApprove.FieldValLong!TIER_ORDER,V.Local.sTier)
+			F.Intrinsic.Control.EndIf
+			F.ODBC.conx!rstChkTier.Close
+			'send a message that the PO has been approved
+			F.Intrinsic.String.Build("PO Number: {0} has been approved by {1} at {2}, but must be approved by {3}also.",V.ODBC.conx!rstApprove.FieldValTrim!PURCHASE_ORDER,V.Local.sRet,V.Ambient.Now,V.Local.sTier,V.Local.sMsg)
+		F.Intrinsic.Control.EndIf
+		
+
+'		F.Intrinsic.String.Concat("PO Number: ",V.ODBC.conx!rstApprove.FieldValTrim!PURCHASE_ORDER," has been approved by ",V.Caller.User," at ",V.Ambient.Now,V.Local.sMsg)
+		F.Global.Messaging.CreateInternalMessage(V.ODBC.conx!rstApprove.FieldValTrim!ORIGINATOR,V.Local.sMsg)
+
+		F.Intrinsic.UI.Msgbox("Would you like to send an email to the PO originator?","Send Email",4,V.Local.iRet)
+		F.Intrinsic.Control.If(V.Local.iRet,=,6)
+			F.Global.Messaging.isCourierRunning(V.Local.iRet)
+			F.Intrinsic.Control.If(V.Local.iRet,<>,0)
+				F.Global.Security.GetUserEmail(V.ODBC.conx!rstApprove.FieldValTrim!ORIGINATOR,V.Caller.CompanyCode,V.Local.sEmail)
+				F.Global.Security.GetFullName(V.ODBC.conx!rstApprove.FieldValTrim!ORIGINATOR,V.Caller.CompanyCode,V.Local.sOrigName)
+				F.Global.Security.GetUserEmail(V.Caller.User,V.Caller.CompanyCode,V.Local.sUserEmail)
+				F.Global.Security.GetFullName(V.Caller.User,V.Caller.CompanyCode,V.Local.sUserName)
+				F.Global.Messaging.CreateEMMessage(V.Local.sEmail,V.Local.sOrigName,V.Local.sUserEmail,V.Local.sUserName,"PO Approved",V.Local.sMsg)
+				F.Intrinsic.UI.Msgbox("Email Sent.")
+			F.Intrinsic.Control.Else
+				'Notify courier NOT running
+				F.Intrinsic.UI.Msgbox("Courier is not running. Please ensure courier is running in order to send emails.")
+			F.Intrinsic.Control.EndIf
+		F.Intrinsic.Control.EndIf
+
+'	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Else
+	F.Intrinsic.Debug.SetLA("Unable to approve PO: ",V.Local.sQuery)
+	F.Intrinsic.String.Build("Unable to find an Approval record for PO No. {0}.  PO Approval was not successful. ",V.Local.sRet,V.Local.sMsg)
+
+'	F.Intrinsic.String.Concat("Unable to find an Approval record for PO No. ",V.Local.sRet,".  PO Approval was not successful.",V.Local.sMsg)
+F.Intrinsic.Control.EndIf
+F.ODBC.conx!rstApprove.Close
+Gui.F_Approval.gsfgApprove.RowHeight(V.Args.iR,0)
+
+F.Intrinsic.Variable.ArgExists("sSub",V.Local.bExists)
+F.Intrinsic.Control.If(V.Local.bExists,=,True)
+	F.Intrinsic.Control.If(V.Args.sSub,<>,"All")
+		F.Intrinsic.Control.CallSub(Cmdrefresh_click)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Else
+	F.Intrinsic.Control.CallSub(Cmdrefresh_click)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Approve_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3000_PO_APPROVAL.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+Program.Sub.Approve.End
+
+Program.Sub.View_PO.Start
+'Modification: Quote 2607
+'  A View button will be added to each row in the Quote and PO Approval screen.
+'  Clicking the View button on the Quote Approval screen will open the selected Quote No in Quote Maintenance in View only mode.
+'  Similarly, clicking the View button in the PO Approval screen will open the selected PO in PO Maintenance in View only mode.
+'  Also, clicking on a Script button from Quote maintenance/PO Maintenance will approve the selected Quote/PO,
+'  if that user meets the $ limit and all other logic applies (See Quotes 2472 & 2413 for more details)
+
+'  A callwrapper will need to be added for PUR064GH.
+'  This has already been wrapped on CORE's side, and just needs to be added to the SYS050 module.
+
+F.Intrinsic.Control.SetErrorHandler("View_PO_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.sQuery.Declare(String)
+V.Local.sPO.Declare(String)
+V.Local.sParam.Declare(String)
+V.Local.sFQN.Declare(String)
+V.Local.bExists.Declare(Boolean)
+V.Local.sFile.Declare(String)
+V.Local.iR.Declare(Long)
+
+V.Local.iR.Set(V.Args.iR)
+Gui.F_Approval.gsfgApprove.GetTextMatrix(0,V.Args.iR,V.Local.sPO)
+F.Intrinsic.Control.If(V.Local.sPO.Trim,=,"")
+	F.Intrinsic.Control.ExitSub
+F.Intrinsic.Control.EndIf
+
+'Open PO Maintenance in view mode for the selected PO
+F.Intrinsic.String.Build("V!*!{0}!*!",V.Local.sPO,V.Local.sParam)
+
+'F.Intrinsic.String.Concat("V!*!",V.Local.sPO,"!*!",V.Local.sParam)
+F.Global.General.CallWrapperSync(175200,V.Local.sParam)
+
+'Check the approval file for value, if it doesnt exist, assume false
+F.Intrinsic.String.Build("{0}\PO_Approval{1}.txt",V.Caller.TempDir,V.Caller.Terminal,V.Local.sFQN)
+
+'F.Intrinsic.String.Concat(V.Caller.TempDir,"\\PO_Approval",V.Caller.Terminal,".txt",V.Local.sFQN)
+F.Intrinsic.File.Exists(V.Local.sFQN,V.Local.bExists)
+F.Intrinsic.Control.If(V.Local.bExists,=,True)
+	F.Intrinsic.File.File2String(V.Local.sFQN,V.Local.sFile)
+	F.Intrinsic.File.DeleteFile(V.Local.sFQN)
+F.Intrinsic.Control.Else
+	F.Intrinsic.Control.ExitSub
+F.Intrinsic.Control.EndIf
+F.Intrinsic.String.StripCharacters(V.Local.sFile,V.Local.sFile)
+
+F.Intrinsic.Control.If(V.Local.sFile,=,"True")
+	F.Intrinsic.Control.CallSub(Approve,"iR",V.Local.iR,"bSilent",False)
+F.Intrinsic.Control.EndIf
+
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("View_PO_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: ATG_PO_APPROVAL.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+Program.Sub.View_PO.End
+
+Program.Sub.BuildStyles_LineGSFG.Start
+F.Intrinsic.Control.SetErrorHandler("BuildStyles_LineGSFG_Err")
+
+V.Local.sError.Declare(String)
+V.Local.iC.Declare(Long)
+'BuildStyles Lines Grid
+Gui.F_lines.gsflxLine.Cols(6)
+Gui.F_Lines.gsflxLine.SetColumnPercentages(".20:.30:.12:.08:.15:.15")
+Gui.F_lines.gsflxLine.Rows(1)
+Gui.F_lines.gsflxLine.TextMatrix(0,0,"Part #")
+'Gui.F_Approval.gsfgApprove.ColWidth(0,1000)
+Gui.F_lines.gsflxLine.TextMatrix(1,0,"Description")
+'Gui.F_Approval.gsfgApprove.ColWidth(1,2600)
+Gui.F_lines.gsflxLine.TextMatrix(2,0,"Qty")
+'Gui.F_Approval.gsfgApprove.ColWidth(2,1800)
+Gui.F_lines.gsflxLine.TextMatrix(3,0,"UM")
+'Gui.F_Approval.gsfgApprove.ColWidth(3,1600)
+Gui.F_lines.gsflxLine.TextMatrix(4,0,"Cost")
+'Gui.F_Approval.gsfgApprove.ColWidth(4,1200)
+Gui.F_lines.gsflxLine.TextMatrix(5,0,"Extended Cost")
+'Gui.F_Approval.gsfgApprove.ColWidth(5,800)
+Gui.F_lines.gsflxLine.Rows(2)
+Gui.F_lines.gsflxLine.FixedRows(1)
+
+F.Intrinsic.Control.For(V.Local.iC,0,5,1)
+	Gui.F_lines.gsflxLine.BuildStyle(1,V.Local.iC,"TYPE","LOCKED","True")
+	Gui.F_lines.gsflxLine.BuildStyle(1,V.Local.iC,"FORMAT","ALIGNMENT",2)
+F.Intrinsic.Control.Next(V.Local.iC)
+
+F.Intrinsic.Variable.SetUDTFieldReference(V.uGlobal.uLines!Number,"Part")
+F.Intrinsic.Variable.SetUDTFieldReference(V.uGlobal.uLines!Description,"Description")
+F.Intrinsic.Variable.SetUDTFieldReference(V.uGlobal.uLines!Qty,"Qty_Order")
+F.Intrinsic.Variable.SetUDTFieldReference(V.uGlobal.uLines!UM,"UM_Purchasing")
+F.Intrinsic.Variable.SetUDTFieldReference(V.uGlobal.uLines!Cost,"Cost")
+F.Intrinsic.Variable.SetUDTFieldReference(V.uGlobal.uLines!Ext_Cost,"Extension")
+
+Gui.F_lines.gsflxLine.ApplyStyle(1,1)
+
+
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("BuildStyles_LineGSFG_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3000_PO_APPROVAL.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.BuildStyles_LineGSFG.End
+
+Program.Sub.Load_ULines.Start
+'added 4/30/2012 by enm for Quote 3572
+F.Intrinsic.Control.SetErrorHandler("Load_ULines_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.sQuery.Declare(String)
+V.Local.sPO.Declare(String)
+V.Local.iPCt.Declare(Long)
+V.Local.iCTot.Declare(Float)
+V.Local.iECTot.Declare(Float)
+
+V.Local.sPO.Set(V.Args.sPO)
+F.Intrinsic.String.Build("SELECT Part, Description, UM_Purchasing,Cost,Qty_Order,Extension FROM V_PO_LINES WHERE PURCHASE_ORDER= '{0}' ORDER BY RECORD_NO ASC ",V.local.sPO,V.Local.sQuery)
+'F.Intrinsic.String.Concat("SELECT Part, Description, UM_Purchasing,Cost,Qty_Order,Extension FROM V_PO_LINES WHERE PURCHASE_ORDER='",V.Local.sPO,"' ORDER BY RECORD_NO ASC",V.Local.sQuery)
+F.ODBC.Connection!conx.OpenRecordsetRO("rstLines",V.Local.sQuery)
+F.Intrinsic.Variable.LoadUDTFromRecordset("conx","rstLines","v.uglobal.uLines",False)
+F.ODBC.conx!rstLines.Close
+
+'Get total Cost to set in ulines.
+F.Intrinsic.Control.For(V.Local.iPCt,0,V.uGlobal.uLines.UBound,1)
+	F.Intrinsic.Math.Add(V.Local.iCTot,V.uGlobal.uLines(v.Local.iPCt)!Cost,V.Local.iCTot)
+	F.Intrinsic.Math.Add(V.Local.iECTot,V.uGlobal.uLines(v.Local.iPCt)!Ext_Cost,V.Local.iECTot)
+F.Intrinsic.Control.Next(V.Local.iPCt)
+
+V.Local.iPCt.Set(0)
+F.Intrinsic.Control.If(V.uGlobal.uLines.UBound,>,0)
+	F.Intrinsic.Math.Add(V.uGlobal.uLines.UBound,1,V.Local.iPCt)
+	V.uGlobal.uLines.RedimPreserve(V.uGlobal.uLines.LBound,V.Local.iPCt)
+	V.uGlobal.uLines(v.Local.iPCt)!Number.Set("Sub Total")
+	V.uGlobal.uLines(v.Local.iPCt)!Cost.Set(V.Local.iCTot)
+	V.uGlobal.uLines(v.Local.iPCt)!Ext_Cost.Set(V.Local.iECTot)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Load_ULines_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3000_PO_APPROVAL.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+Program.Sub.Load_ULines.End
+
+Program.Sub.Load_GSFLX.Start
+'added 4/30 to load the Lines flexgrid by ENM
+F.Intrinsic.Control.SetErrorHandler("Load_GSFG_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.sPO.Declare(String)
+V.Local.sPO.Set(V.Args.spo)
+
+F.Intrinsic.Control.CallSub(Load_ulines,"sPO",V.Local.sPO)
+Gui.F_Lines.gsflxLine.Visible(False)
+Gui.F_Lines.gsflxLine.Rows(1)
+Gui.F_Lines.gsflxLine.Rows(2)
+Gui.F_Lines.gsflxLine.FixedRows(1)
+Gui.F_Lines.gsflxLine.LoadFromUDT("uGlobal.uLines","Number::0*!*Description::1*!*Qty::2*!*UM::3*!*Cost::4*!*Ext_Cost::5",1)
+F.Intrinsic.Control.If(V.Screen.F_Lines!gsflxLine.Rows,=,1)
+	Gui.F_Lines.gsflxLine.Rows(2)
+	Gui.F_Lines.gsflxLine.ApplyStyle(1,1)
+	Gui.F_Lines.gsflxLine.FixedRows(1)
+F.Intrinsic.Control.EndIf
+Gui.F_Lines.gsflxLine.Visible(True)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Load_GSFG_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3000_PO_APPROVAL.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.Load_GSFLX.End
+
+Program.Sub.View_Lines.Start
+'Modification 3572 on 4/30/2012 by ENM
+'  A Lines button will be added to each row in the Quote and PO Approval screen.
+' clicking the Lines button in the PO Approval screen will open the selected PO in new screen with Flexgrid
+
+F.Intrinsic.Control.SetErrorHandler("View_PO_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.sQuery.Declare(String)
+V.Local.sPO.Declare(String)
+V.Local.sParam.Declare(String)
+V.Local.sFQN.Declare(String)
+V.Local.bExists.Declare(Boolean)
+V.Local.sFile.Declare(String)
+V.Local.iR.Declare(Long)
+
+V.Local.iR.Set(V.Args.iR)
+
+'Gui.F_Lines.gsflxLine.GetTextMatrix(1,V.local.iR,V.Local.sPO)
+Gui.F_Approval.gsfgApprove.GetTextMatrix(0,V.Local.iR,V.Local.sPO)
+F.Intrinsic.Control.If(V.Local.sPO.Trim,=,"")
+	F.Intrinsic.Control.ExitSub
+F.Intrinsic.Control.EndIf
+
+'flexgrid buildstye
+F.Intrinsic.Control.CallSub(Buildstyles_linegsfg)
+
+F.Intrinsic.Control.CallSub(Load_gsflx,"sPO",V.Local.sPO)
+Gui.F_Approval..Enabled(False)
+Gui.F_Lines..Show
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("View_PO_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: ATG_PO_APPROVAL.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.View_Lines.End
+
+Program.Sub.Unload.Start
+'F.ODBC.Connection!conx.Close
+'F.Intrinsic.Control.End
+Gui.F_Lines..Visible(False)
+Gui.F_Approval..Enabled(True)
+Gui.F_Approval..Show
+
+Program.Sub.Unload.End
+
+Program.Sub.Lines_Resize.Start
+F.Intrinsic.Control.SetErrorHandler("f_approval_resize_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.x.Declare(Long)
+V.Local.y.Declare(Long)
+V.Local.gX.Declare(Long)
+
+F.Intrinsic.Control.If(V.Screen.F_Lines.Width,<,10600)
+	Gui.F_Approval..Size(10600,V.Screen.F_Lines.Height)
+F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.If(V.Screen.F_Lines.Height,<,4000)
+	Gui.F_Approval..Size(V.Screen.F_Lines.Width,4000)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Math.Sub(V.Screen.F_Lines.Width,450,V.Local.x)
+F.Intrinsic.Math.Sub(V.Screen.F_Lines.Height,1270,V.Local.y)
+Gui.F_Lines.gsflxLine.Size(V.Local.x,V.Local.y)
+
+
+'Subtract any space in gsfg that will not resize from total gsfg width
+F.Intrinsic.Math.Add(800,350,V.Local.gX)
+F.Intrinsic.Math.Sub(V.Local.x,V.Local.gX,V.Local.gX)
+
+'Size columns
+'F.Intrinsic.Math.Mult(V.Local.gX,0.11111111,V.Local.x)
+'Gui.F_Approval.gsfgApprove.ColWidth(0,V.Local.x)
+'F.Intrinsic.Math.Mult(V.Local.gX,0.33333333,V.Local.x)
+'Gui.F_Approval.gsfgApprove.ColWidth(1,V.Local.x)
+'F.Intrinsic.Math.Mult(V.Local.gX,0.22222222,V.Local.x)
+'Gui.F_Approval.gsfgApprove.ColWidth(2,V.Local.x)
+'F.Intrinsic.Math.Mult(V.Local.gX,0.2,V.Local.x)
+'Gui.F_Approval.gsfgApprove.ColWidth(3,V.Local.x)
+'F.Intrinsic.Math.Mult(V.Local.gX,0.13333333,V.Local.x)
+'Gui.F_Approval.gsfgApprove.ColWidth(4,V.Local.x)
+
+Gui.F_Lines.gsflxLine.SetColumnPercentages(".20:.30:.12:.08:.15:.15")
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("f_approval_resize_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3000_PO_APPROVAL.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.Lines_Resize.End
+
+Program.Sub.Explanation.Start
+F.Intrinsic.Control.SetErrorHandler("Explanation_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.sQuery.Declare(String)
+
+Gui.F_Approval.gsfgApprove.GetTextMatrix(0,V.Args.key,V.Global.sCurrPO)
+
+'Get current Explanation if there.
+F.Intrinsic.String.Build("Select EXPLANATION from GCG_3000_PO_APRV where PURCHASE_ORDER = '{0}'",V.Global.sCurrPO,V.Local.sQuery)
+F.ODBC.Connection!conx.OpenRecordsetRO("rstExp",V.Local.sQuery)
+F.Intrinsic.Control.If(V.ODBC.conx!rstExp.EOF,<>,True)
+	Gui.F_Explanation.mltxt_Explanation.Text(V.ODBC.conx!rstExp.FieldValTrim!EXPLANATION)
+F.Intrinsic.Control.EndIf
+F.ODBC.conx!rstExp.Close
+
+Gui.F_Explanation.mltxt_Explanation.SetFocus
+Gui.F_Explanation..Visible(True)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Explanation_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3000_PO_APPROVAL.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.Explanation.End
+
+program.sub.f_explanation_unload.start
+F.Intrinsic.Control.SetErrorHandler("f_explanation_unload_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+'Hide Explanation
+Gui.F_Explanation..Visible(False)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("f_explanation_unload_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3000_PO_APPROVAL.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+
+program.sub.f_explanation_unload.end
+
+program.sub.cmd_saveexplanation_click.start
+F.Intrinsic.Control.SetErrorHandler("cmd_saveexplanation_click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+'Save explanation for PO
+V.Local.sRet.Declare(String)
+V.Local.iUB.Declare(Long)
+
+''Get the current index of existing PO in UDT or Resize and set new index and local indexing variable
+'F.Intrinsic.Control.If(V.uGlobal.uExp.UBound,<>,-1)
+'	F.Intrinsic.Variable.UDTMultiSeek(V.uGlobal.uExp!PO,V.Global.sCurrPO,V.Local.sRet)
+'	F.Intrinsic.Control.If(V.Local.sRet,<>,"")
+'		V.Local.iUB.Set(V.Local.sRet.Long)
+'	F.Intrinsic.Control.Else
+'		F.Intrinsic.Math.Add(V.uGlobal.uExp.UBound,1,V.Local.iUB)
+'		V.uGlobal.uExp.RedimPreserve(V.uGlobal.uExp.LBound,V.Local.iUB)
+'	F.Intrinsic.Control.EndIf
+'F.Intrinsic.Control.Else
+'	V.uGlobal.uExp.Redim(0,0)
+'	V.Local.iUB.Set(0)
+'F.Intrinsic.Control.EndIf
+'
+''Set Elements in the correct index of UDT
+'V.uGlobal.uExp(v.Local.iUB)!PO.Set(V.Global.sCurrPO.Trim)
+'V.uGlobal.uExp(v.Local.iUB)!EXPLANATION.Set(V.Screen.F_Explanation!mltxt_Explanation.Text)
+
+'Update Table
+F.Intrinsic.String.Build("Update GCG_3000_PO_APRV set EXPLANATION = '{0}' where PURCHASE_ORDER = '{1}'",V.Screen.F_Explanation!mltxt_Explanation.Text,V.Global.sCurrPO,V.Local.sRet)
+F.ODBC.Connection!conx.Execute(V.Local.sRet)
+
+'hide form
+F.Intrinsic.Control.CallSub(F_explanation_unload)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("cmd_saveexplanation_click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3000_PO_APPROVAL.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+
+program.sub.cmd_saveexplanation_click.end
+
+Program.Sub.Not_Approved.Start
+F.Intrinsic.Control.SetErrorHandler("Not_Approved_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+'Mark NOT Approved in Table with Explenation, Date, Time, User, Name
+
+V.Local.sUser.Declare(String)
+V.Local.sQuery.Declare(String)
+V.Local.sDate.Declare(String)
+V.Local.iRet.Declare(Long)
+V.Local.sMsg.Declare(String)
+V.Local.sRow.Declare(String)
+
+'Get Current PO
+Gui.F_Approval.gsfgApprove.GetTextMatrix(0,V.Args.key,V.Global.sCurrPO)
+Gui.F_Approval.gsfgApprove.ReadRow(V.Args.key,V.Local.sRow)
+
+F.Intrinsic.String.Build("Select * from GCG_3000_PO_APRV where PURCHASE_ORDER = '{0}'",V.Global.sCurrPO,V.Local.sQuery)
+F.ODBC.Connection!conx.OpenRecordsetRW("rstNOT",V.Local.sQuery)
+F.Intrinsic.Control.If(V.ODBC.conx!rstNOT.EOF,<>,True)
+	
+	F.ODBC.conx!rstNOT.Set!APPROVED(0)
+	F.ODBC.conx!rstNOT.Set!DATE_LAST_ACTION(V.Ambient.Now)
+	'Get Full Name for Name field
+	F.Global.Security.GetFullName(V.Caller.User,V.Caller.CompanyCode,V.Local.sUser)
+	F.ODBC.conx!rstNOT.Set!NAME_APPROVER(V.Local.sUser)
+	F.ODBC.conx!rstNOT.Set!APPROVER(V.Caller.User)
+	F.ODBC.conx!rstNOT.Update
+	F.Intrinsic.UI.Msgbox("Send Notifcation to Originator that PO is NOT Approved?","Send Email?",4,V.Local.iRet)
+	F.Intrinsic.Control.If(V.Local.iRet,=,6)
+		F.Intrinsic.Control.CallSub(Sendmsg,"Aprv","NOT","sRow",V.Local.sRow)
+	F.Intrinsic.Control.EndIf
+	
+F.Intrinsic.Control.EndIf
+F.ODBC.conx!rstNOT.Close
+
+F.Intrinsic.Control.CallSub(Cmdrefresh_click)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Not_Approved_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3000_PO_APPROVAL.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.Not_Approved.End
+
+Program.Sub.Check_Not_Approved.Start
+F.Intrinsic.Control.SetErrorHandler("Check_Not_Approved_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+
+'Loop through grid and if NOT approved, then it needs to be marked NOT approved with an * in the last column as a prefix.
+V.Local.i.Declare(Long)
+V.Local.iRows.Declare(Long)
+V.Local.srow.Declare(String)
+V.Local.sQuery.Declare(String)
+
+F.Intrinsic.Math.Sub(V.Screen.F_Approval!gsfgApprove.Rows,1,V.Local.iRows)
+F.Intrinsic.Control.For(V.Local.i,1,V.Local.iRows,1)
+	Gui.F_Approval.gsfgApprove.GetTextMatrix(0,V.Local.i,V.Local.sRow)
+	F.Intrinsic.String.Build("Select APPROVED from GCG_3000_PO_APRV where PURCHASE_ORDER = '{0}'",V.Local.srow,V.Local.sQuery)
+	F.ODBC.Connection!conx.OpenRecordsetRO("rstNOT",V.Local.sQuery)
+	F.Intrinsic.Control.If(V.ODBC.conx!rstNOT.EOF,<>,True)
+		F.Intrinsic.Control.If(V.ODBC.conx!rstNOT.FieldVal!APPROVED,=,False)
+			Gui.F_Approval.gsfgApprove.TextMatrix(9,V.Local.i,"* NOT Apprvd.")
+		F.Intrinsic.Control.Else
+			Gui.F_Approval.gsfgApprove.TextMatrix(9,V.Local.i,"NOT Apprvd.")
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.EndIf
+	F.ODBC.conx!rstNOT.Close
+F.Intrinsic.Control.Next(V.Local.i)
+
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Check_Not_Approved_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3000_PO_APPROVAL.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.Check_Not_Approved.End
+
+Program.Sub.LoadCommentsUDT.Start
+F.Intrinsic.Control.SetErrorHandler("LoadCommentsUDT_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.i.Declare(Long)
+V.Local.iRows.Declare(Long)
+V.Local.sPO.Declare(String)
+V.Local.sQuery.Declare(String)
+V.Local.sCom.Declare(String)
+V.Local.iUB.Declare(Long)
+
+V.uGlobal.uComments.Redim(-1,-1)
+
+F.Intrinsic.Math.Sub(V.Screen.F_Approval!gsfgApprove.Rows,1,V.Local.iRows)
+F.Intrinsic.Control.For(V.Local.i,1,V.Local.iRows,1)
+	Gui.F_Approval.gsfgApprove.GetTextMatrix(0,V.Local.i,V.Local.sPO)
+	F.Intrinsic.String.Build("select TEXT from v_PO_TEXT where PURCHASE_ORDER = '{0}' and ltrim(rtrim(PO_LINE)) = '' order by POTXT_SEQ",V.Local.sPO,V.Local.sQuery)
+	F.ODBC.Connection!conx.OpenRecordsetRO("rstCom",V.Local.sQuery)
+	F.Intrinsic.Control.If(V.ODBC.conx!rstCom.EOF,<>,True)
+		F.Intrinsic.Control.If(V.uGlobal.uComments.UBound,=,-1)
+			V.uGlobal.uComments.Redim(0,0)
+			V.Local.iUB.Set(0)
+		F.Intrinsic.Control.Else
+			F.Intrinsic.Math.Add(V.uGlobal.uComments.UBound,1,V.Local.iUB)
+			V.uGlobal.uComments.RedimPreserve(V.uGlobal.uComments.LBound,V.Local.iUB)
+		F.Intrinsic.Control.EndIf
+		V.Local.sCom.Set("")
+		F.Intrinsic.Control.DoUntil(V.ODBC.conx!rstCom.EOF,=,True)
+				F.Intrinsic.String.Build("{0}{1}",V.Local.sCom,V.ODBC.conx!rstCom.FieldVal!TEXT,V.Local.sCom)
+			F.ODBC.conx!rstCom.MoveNext
+		F.Intrinsic.Control.Loop
+		V.uGlobal.uComments(v.Local.iUB)!PO.Set(V.Local.sPO)
+		V.uGlobal.uComments(v.Local.iUB)!COMMENTS.Set(V.Local.sCom)
+	F.Intrinsic.Control.EndIf
+	F.ODBC.conx!rstCom.Close
+
+F.Intrinsic.Control.Next(V.Local.i)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("LoadCommentsUDT_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3000_PO_APPROVAL.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.LoadCommentsUDT.End
+
+Program.Sub.SendMsg.Start
+F.Intrinsic.Control.SetErrorHandler("SendMsg_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+'Send Email NOT Approved.
+
+V.Local.i.Declare(Long)
+V.Local.sQuery.Declare(String)
+V.Local.sMsg.Declare(String)
+V.Local.sUserName.Declare(String)
+V.Local.sVendor.Declare(String)
+V.Local.sToEmail.Declare(String)
+V.Local.sTOUser.Declare(String)
+V.Local.sFromEmail.Declare(String)
+V.Local.sComments.Declare(String)
+V.Local.sRet.Declare(String)
+V.Local.sExpl.Declare(String)
+V.Local.sRow.Declare(String)
+V.Local.sAmount.Declare(String)
+
+
+'Get PO Header Comments.
+F.Intrinsic.Variable.UDTMultiSeek(V.uGlobal.uComments!PO,V.Global.sCurrPO,V.Local.sRet)
+F.Intrinsic.Control.If(V.Local.sRet,<>,"")
+	V.Local.sComments.Set(V.uGlobal.uComments(v.Local.sRet.Long)!COMMENTS)
+F.Intrinsic.Control.EndIf
+
+'Get Current Explanation
+F.Intrinsic.String.Build("Select EXPLANATION from GCG_3000_PO_APRV where PURCHASE_ORDER = '{0}'",V.Global.sCurrPO,V.Local.sQuery)
+F.ODBC.Connection!conx.OpenRecordsetRO("rstExp",V.Local.sQuery)
+F.Intrinsic.Control.If(V.ODBC.conx!rstExp.EOF,<>,True)
+	V.Local.sExpl.Set(V.ODBC.conx!rstExp.FieldValTrim!EXPLANATION)
+F.Intrinsic.Control.EndIf
+F.ODBC.conx!rstExp.Close
+
+'Get full name of user denying PO
+F.Global.Security.GetFullName(V.Caller.User,V.Caller.CompanyCode,V.Local.sUserName)
+
+'Split Passed Row
+F.Intrinsic.String.Split(V.Args.sRow,"*!*",V.Local.sRow)
+V.Local.sTOUser.Set(V.Local.sRow(2).Trim)
+F.Intrinsic.String.Format(V.Local.sRow(4),"$###,###,###.00",V.Local.sAmount)
+V.Local.sVendor.Set(V.Local.sRow(1))
+
+'Build Message
+F.Intrinsic.String.Build("PO NOT Approved{0}{0}User ID:{1}{0}Name:{2}{0}PO:{3}{0}Vendor:{4}{0}Amount:{5}{0}Explanation:{6}{0}Comments:{7}{0}",V.Ambient.NewLine,V.Caller.User,V.Local.sUserName,V.Global.sCurrPO,V.Local.sVendor,V.Local.sAmount,V.Local.sExpl,V.Local.sComments,V.Local.sMsg)
+'Send Message
+
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("SendMsg_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3000_PO_APPROVAL.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.SendMsg.End
+
+Program.Sub.GetUserTier.Start
+F.Intrinsic.Control.SetErrorHandler("GetUserTier_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+'Make sure user is part of a Tier, else end program.
+V.Local.sQuery.Declare(String)
+F.Intrinsic.String.Build("Select Tier from GCG_3000_TIER_USER where {1}USER{1} = '{0}'",V.caller.User,V.ambient.DblQuote,V.local.sQuery)
+F.ODBC.Connection!conx.OpenRecordsetRO("rstChkTier",V.Local.sQuery)
+F.Intrinsic.Control.If(V.ODBC.conx!rstChkTier.EOF,<>,True)
+	V.Global.iTier.Set(V.ODBC.conx!rstChkTier.FieldValLong!TIER)
+F.Intrinsic.Control.Else
+	F.Intrinsic.UI.Msgbox("User NOT assigned to Tier, please check assignments for Tiers and Users")
+	F.Intrinsic.Control.End
+F.Intrinsic.Control.EndIf
+F.ODBC.conx!rstChkTier.Close
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("GetUserTier_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3000_PO_APPROVAL.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.GetUserTier.End
+
+Program.Sub.Comments.Start
+${$0$}$GCG_3000_PO_APPROVAL$}$SFF$}$11/9/2015
+${$1$}$$}$$}$1$}$16850$}$PUS064GH-POPULATE-HOOK (PO MAINTENANCE)$}$11/9/2015 3:28:51 PM$}$(Program: PUR064GH ; Screen: PUS064GH)
+
+${$1$}$$}$$}$0$}$16890$}$PUS064GH-SCRIPT-1-HOOK (PO MAINTENANCE)$}$11/9/2015 3:27:39 PM$}$(Program: PUR064GH ; Screen: PUS064GH)
+
+${$2$}$$}$$}$4$}$4$}$TABLES$}$11/9/2015 3:31:25 PM$}$CREATE TABLE "GCG_3000_PO_APRV"(
+ "PURCHASE_ORDER" CHAR(7) NOT NULL ,
+ "VENDOR" CHAR(6) NOT NULL ,
+ "ORIGINATOR" CHAR(8) NOT NULL ,
+ "DATE_DUE" DATE NOT NULL ,
+ "AMOUNT" DOUBLE NOT NULL ,
+ "APPROVED" BIT NOT NULL DEFAULT 0,
+ "USER_LAST_ACTION" CHAR(8),
+ "DATE_LAST_ACTION" DATE,
+ "EXPLANATION" CHAR(500),
+ PRIMARY KEY ("PURCHASE_ORDER"));
+
+ CREATE TABLE "GCG_3000_TIERS"(
+ "TIER" INTEGER NOT NULL ,
+ "MIN_AMT" NUMERIC(12,4),
+ "MAX_AMT" NUMERIC(12,4),
+ PRIMARY KEY ("TIER"));
+
+ CREATE TABLE "GCG_3000_TIER_USER"(
+ "TIER" INTEGER NOT NULL ,
+ "USER" CHAR(8) NOT NULL ,
+ "EMAIL" CHAR(50),
+ PRIMARY KEY ("TIER", "USER"));
+
+
+${$2$}$$}$$}$3$}$2$}$GCG_3000_PO_APPROVAL_REQ.gas$}$11/9/2015 3:30:55 PM$}$Required for this project 3000, see that script for more details.
+${$2$}$$}$$}$2$}$2$}$GCG_3000_PO_APPROVAL_MSG.gas$}$11/9/2015 3:30:21 PM$}$Required for this project, see that script for more details.
+${$2$}$$}$$}$0$}$2$}$GCG_3000_PO_APPROVAL_CL.gas$}$11/9/2015 3:27:39 PM$}$call this script on hook 16890 when certain criteria is met.
+${$3$}$0$}$$}$-1$}$-1$}$$}$1/1/1900$}$Changed 11/9/2015 SFF
+Quote 7054
+Project 3000
+
+This quote is for the modification of custom project ATG_Po_Approval
+Additions to this project included a “Tier” system. The user has specific “Tiers” of approvers listed in the specifications section of this quote. Users will not be able to e-mail POs unless they have been approved by the appropriate “Tier”. As well as disabling the e-mail button if a PO has not been approved and the creation of a custom table to store this information.
+
+Menu Path: Purchasing>Transactions>PO Approval
+
+Hook:
+ID: 16850 (Populate – Purchase Order Header Maintenance –Update screen)
+ID: 000047 (E-mail button) – to be disabled if the PO is not approved by the appropriate approver/approvers
+
+Columns will show the following:
+1.PO# (Same as ATG_Po_Approval)
+2.Vendor (Same as ATG_Po_Approval)
+3.Originator (Same as ATG_Po_Approval)
+4.Due Date (Same as ATG_Po_Approval)
+5.Amount (Same as ATG_Po_Approval)
+6.Approve button (Same as ATG_Po_Approval, with the addition of placing a “Y” in the approved column of the custom table)
+7.Not Approved button (This is a new button that is to be added) – If selected this button will place a “N” in the approved column of the custom table
+8.View button (Same as ATG_Po_Approval)
+9.Lines button (Same as ATG_Po_Approval)
+10.Explanation button (This is a new button that is to be added) – When selected a form would appear allowing the user to enter an explanation for why the PO was either approved or not approved, then this information will be stored in the explanation column in the custom table
+
+When the user clicks the “Approve” or “Approve All” button on the screen the user ID will be checked. If the approver meets the “Tier” qualifications the same logic that currently takes place will occur with the addition of the users name being put in the Approver column of the custom SQL table. If the approver does not meet the “Tier” qualifications, a message box will be displayed stating that the PO needs to be approved by “” listing the appropriate approvers name.
+
+Custom SQL table will have the following columns:
+PO#, Vendor, Originator, Due_Date, Amount, Approved, Who_Approved, Explanation
+
+Tier 1 must be approved first, then tier 2, then tier 3, and so on.
+Tier 1 if PO Amount is $0-$999 Approver: Kent Schrock kschrock@machlab.com
+Tier 2 if PO amount is $1,000-$9,999 Approver: Walter Thomas wthomas@machlab.com
+Tier 3 if PO amount is $10,000-$49,999 Approver: Mark Nouhan mnouhan@machlab.com
+Tier 4 if PO amount is $50,000-$99,999 Can be approved by either Tier 4 approver, both approvals are not required. Approvers: Kent Seston kseston@machlab.com, Mark Deuel mdeuel@machlab.com
+Tier 5 if PO amount is $100,000+ Approver: James Finley jfinley@machlab.com
+The e-mail format will be changed to list the following:
+User ID (To remain the same)
+User Name (To remain the same)
+PO Number (To remain the same)
+Vendor (This will be an addition, to be pulled from the custom SQL table)
+Amount (To remain the same)
+Explanation (This will be an addition, to be pulled from the custom SQL table)
+Comments (This will be an addition and will show the same text from the “Comments” button on the PO Header screen, COMMENTS.V_BI_PACKINGLIST)
+
+'Original Notes:
+'Coded by: SMC
+'Modified by: Melinda Keyes
+'Modified by: Erin Marlow
+'Project Start Date: 12/13/2011
+'Quote: 3046
+'Quote 3572
+'Hooks:
+'  Custom Menu Item - Purchasing > Trasactions > PO Approval
+'  Populate - (PO Header Maintenance) 16850
+'  Script 1 - (PO Header Maintenance) 16890
+'Other Components:
+'  - TABLE ATG_DOLLAR_LIMIT(ORIG_ID IDENTITY,GS_USER CHAR(8),LIMIT DOUBLE,M_TYPE INTEGER);
+'  - TABLE ATG_APPROVERS(APPROVER_ID IDENTITY,GS_USER CHAR(8),APPROVER CHAR(8),M_TYPE INTEGER);
+'  - TABLE ATG_APPROVAL(APPROVAL_ID IDENTITY,PURCHASE_ORDER CHAR(7),ORIGINATOR CHAR(8),AMOUNT DOUBLE,APPROVER CHAR(8),APPROVED_DATE DATETIME,M_TYPE INTEGER)
+'  (Type=2 for POs)
+'  -Updated PUR064GH (With hidden fields added)
+'
+'  - A GAB script for PO Originator Maintenance - ATG_PO_ORIGINATOR_MAINT
+'  - A GAB Script for PO Approval - ATG_PO_APPROVAL
+'  - A GAB Script to run of Purchase Order Header - ATG_PO_APPROVAL_REQ
+'Notes:
+'  PO Approval Screen
+'  A Custom Menu Item called "PO Approval" will be created under Purchasing > Transactions.  This will display a list of all POs that need to be approved, that is within the GS user's PO $ limit.  The list will display
+'  PO #, Vendor, Originator (Who entered the PO), Due Date, and Amount.  The amount will be the sum amount of all the PO's Lines.  To approve POs, the user will have the option of clicking an "Approve All" button
+'  or by individually checking a checkbox next to the desired POs and clicking an OK button.  All PO's that are approved will update the record in ATG_PO_APPROVAL with the current approved PO amount, the Approver,
+'  and the current date/time.
+
+'THIS VERSION INCLUDES MESSAGING WITH DRILL DOWNS
+${$4$}$0$}$$}$0$}$-1$}$SFF$}$11/9/2015 3:32:42 PM$}$Changed from ATG prefix to GCG_3000* project 3000 in ARC.
+Program.Sub.Comments.End
+
