@@ -1,0 +1,91 @@
+Program.Sub.ScreenSU.Start
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+F.Intrinsic.Control.SetErrorHandler("Main_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+
+F.Intrinsic.Task.AppActivate("Purchase Order Header Maintenance - View")
+F.Intrinsic.Task.SendKeys("%{F4}")
+
+F.Intrinsic.Control.End
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Main_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3000_PO_APPROVAL_CL.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+Program.Sub.Main.End
+
+Program.Sub.Comments.Start
+${$0$}$GCG_3000_PO_APPROVAL_CL$}$SFF$}$11/9/2015
+${$1$}$$}$$}$0$}$16890$}$PUS064GH-SCRIPT-1-HOOK (PO MAINTENANCE)$}$11/9/2015 3:14:25 PM$}$(Program: PUR064GH ; Screen: PUS064GH)
+
+for GCG_3000_PO_APPROVAL.gas, is on this hook and calls this script when that hook is fired if certain criteria is met. see that script for more details. 
+${$2$}$$}$$}$0$}$2$}$GCG_3000_PO_APPROVAL.gas$}$11/9/2015 3:14:25 PM$}$on hook 16890, GCG_PO_APPROVAL.gas calls this script. 
+${$3$}$0$}$$}$-1$}$-1$}$$}$1/1/1900$}$11/9/2015 Changed to GCG_3000_PO_APPROVAL_CL.gas
+
+Called from GCG_3000_PO_APPROVAL.gas
+
+Quote: 7054
+Project 3000
+
+Menu Path: Purchasing>Transactions>PO Approval
+
+Hook:
+ID: 16850 (Populate – Purchase Order Header Maintenance –Update screen)
+ID: 000047 (E-mail button) – to be disabled if the PO is not approved by the appropriate approver/approvers
+
+Columns will show the following:
+1.PO# (Same as ATG_Po_Approval) 
+2.Vendor (Same as ATG_Po_Approval)
+3.Originator (Same as ATG_Po_Approval)
+4.Due Date (Same as ATG_Po_Approval)
+5.Amount (Same as ATG_Po_Approval)
+6.Approve button (Same as ATG_Po_Approval, with the addition of placing a “Y” in the approved column of the custom table)
+7.Not Approved button (This is a new button that is to be added) – If selected this button will place a “N” in the approved column of the custom table
+8.View button (Same as ATG_Po_Approval)
+9.Lines button (Same as ATG_Po_Approval)  
+10.Explanation button (This is a new button that is to be added) – When selected a form would appear allowing the user to enter an explanation for why the PO was either approved or not approved, then this information will be stored in the explanation column in the custom table
+
+When the user clicks the “Approve” or “Approve All” button on the screen the user ID will be checked. If the approver meets the “Tier” qualifications the same logic that currently takes place will occur with the addition of the users name being put in the Approver column of the custom SQL table. If the approver does not meet the “Tier” qualifications, a message box will be displayed stating that the PO needs to be approved by “” listing the appropriate approvers name.
+
+Custom SQL table will have the following columns:
+PO#, Vendor, Originator, Due_Date, Amount, Approved, Who_Approved, Explanation
+
+Tier 1 must be approved first, then tier 2, then tier 3, and so on. 
+Tier 1 if PO Amount is $0-$999 Approver: Kent Schrock kschrock@machlab.com
+Tier 2 if PO amount is $1,000-$9,999 Approver: Walter Thomas wthomas@machlab.com
+Tier 3 if PO amount is $10,000-$49,999 Approver: Mark Nouhan mnouhan@machlab.com
+Tier 4 if PO amount is $50,000-$99,999 Can be approved by either Tier 4 approver, both approvals are not required. Approvers: Kent Seston kseston@machlab.com, Mark Deuel mdeuel@machlab.com
+Tier 5 if PO amount is $100,000+ Approver: James Finley jfinley@machlab.com
+The e-mail format will be changed to list the following: 
+User ID (To remain the same)
+User Name (To remain the same)
+PO Number (To remain the same)
+Vendor (This will be an addition, to be pulled from the custom SQL table)
+Amount (To remain the same)
+Explanation (This will be an addition, to be pulled from the custom SQL table)
+Comments (This will be an addition and will show the same text from the “Comments” button on the PO Header screen, COMMENTS.V_BI_PACKINGLIST)
+
+
+
+**Original Notes from Devlopment before changes.
+'Coded by: Melinda Keyes
+'Project Start Date: 8/2/2011
+'Quote: 2607
+'Notes:
+'  This program allows for the closing of the PO Maintenance window when the
+'  approval (Script 1) button is clicked
+'  Does not require any hooks, but needs to be in the Global\\GAB\\GAS\\ directory
+${$4$}$0$}$$}$0$}$-1$}$SFF$}$11/9/2015 3:25:17 PM$}$Changed from ATG prefix to GCG_3000 prefix 
+Program.Sub.Comments.End
+
